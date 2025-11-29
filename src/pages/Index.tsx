@@ -158,7 +158,7 @@ const Index = () => {
             <div className="heritage-line max-w-24 mx-auto" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
             <div className="card-modern p-8 group">
               <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-ocean/20 to-brass/20 mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                 <Compass className="w-10 h-10 text-ocean" strokeWidth={1.5} />
@@ -184,11 +184,11 @@ const Index = () => {
                 Specialist in underwater technology and historical ship research.
               </p>
             </div>
+          </div>
 
-            <div className="md:col-span-3 max-w-2xl mx-auto mt-4">
-              <div className="image-modern">
-                <img src={teamImage} alt="Team member in submarine" className="w-full h-[300px] object-cover rounded-lg" />
-              </div>
+          <div className="max-w-2xl mx-auto">
+            <div className="image-modern">
+              <img src={teamImage} alt="Team member in submarine" className="w-full h-[300px] object-cover rounded-lg" />
             </div>
           </div>
         </div>
