@@ -82,15 +82,15 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "glass-strong" : "glass"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white ${
+          scrolled ? "shadow-lg" : "shadow-md"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-3">
               <Waves className="w-8 h-8 text-accent drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
-              <span className="text-xl font-bold tracking-wide">Nautic Discovery</span>
+              <span className="text-xl font-bold tracking-wide text-primary">Nautic Discovery</span>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
@@ -99,7 +99,7 @@ const Index = () => {
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   className={`text-sm font-medium transition-all duration-300 hover:text-accent hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] ${
-                    activeSection === item.id ? "text-accent drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" : "text-foreground/90"
+                    activeSection === item.id ? "text-accent drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" : "text-primary/80"
                   }`}
                 >
                   {item.label}
