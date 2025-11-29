@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Anchor, Ship, Compass, Mail, MapPin, ChevronRight } from "lucide-react";
+import { Ship, Compass, Mail, MapPin, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-heritage.jpg";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -38,12 +39,12 @@ const Index = () => {
       >
         <div className="container-wide">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-3">
-              <Anchor className="w-7 h-7 text-navy" strokeWidth={2.5} />
-              <span className="text-xl font-serif font-semibold text-navy tracking-tight">
-                Nautic Discovery
-              </span>
-            </div>
+          <div className="flex items-center space-x-3">
+            <img src={logo} alt="Nautic Discovery" className="w-12 h-12" />
+            <span className="text-xl font-serif font-semibold text-navy tracking-tight">
+              Nautic Discovery
+            </span>
+          </div>
 
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
@@ -98,7 +99,7 @@ const Index = () => {
       {/* Mission Quote */}
       <section id="mission" className="section-padding bg-cream">
         <div className="container-narrow text-center">
-          <Anchor className="w-12 h-12 text-ocean mx-auto mb-8" strokeWidth={1.5} />
+          <img src={logo} alt="Nautic Discovery" className="w-16 h-16 mx-auto mb-8" />
           <blockquote className="text-3xl md:text-4xl font-serif text-foreground mb-6 leading-relaxed">
             "It needs a lot of silver to find the gold"
           </blockquote>
@@ -244,10 +245,10 @@ const Index = () => {
       <footer className="bg-foreground/5 border-t border-border">
         <div className="container-wide py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center space-x-3">
-              <Anchor className="w-6 h-6 text-navy" strokeWidth={2} />
-              <span className="font-serif font-semibold text-navy">Nautic Discovery</span>
-            </div>
+          <div className="flex items-center space-x-3">
+            <img src={logo} alt="Nautic Discovery" className="w-10 h-10" />
+            <span className="font-serif font-semibold text-navy">Nautic Discovery</span>
+          </div>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Nautic Discovery. All rights reserved.
             </p>
