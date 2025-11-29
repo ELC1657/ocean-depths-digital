@@ -5,6 +5,7 @@ import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
 import teamImage from "@/assets/team-submarine.jpg";
 import shipwreckImage from "@/assets/shipwreck-scan.jpg";
+import martinImage from "@/assets/martin-wenzel.jpg";
 
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -173,8 +174,8 @@ const Index = () => {
             </div>
 
             <div className="card-modern p-8 group">
-              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-ocean/20 to-brass/20 mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                <Ship className="w-10 h-10 text-ocean" strokeWidth={1.5} />
+              <div className="flex items-center justify-center w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-ocean/20 to-brass/20 mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                <img src={martinImage} alt="Martin Wenzel" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-2xl font-serif font-semibold text-navy text-center mb-2">
                 Martin Wenzel
