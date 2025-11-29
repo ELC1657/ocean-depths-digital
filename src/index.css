@@ -91,19 +91,59 @@ All colors MUST be HSL.
     @apply text-lg md:text-xl leading-relaxed;
   }
 
+  /* Utilities */
   .heritage-line {
-    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+    @apply h-1 bg-gradient-to-r from-transparent via-brass to-transparent;
   }
 
   .section-padding {
-    @apply py-20 md:py-32;
+    @apply py-20 md:py-28;
   }
 
   .container-narrow {
-    @apply max-w-4xl mx-auto px-6 lg:px-8;
+    @apply max-w-4xl mx-auto px-6;
   }
 
   .container-wide {
-    @apply max-w-7xl mx-auto px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-6;
+  }
+
+  /* Modern Design Elements */
+  .card-modern {
+    @apply relative overflow-hidden bg-white rounded-lg border border-border/50 hover:border-ocean/30 transition-all duration-300 hover:shadow-xl;
+  }
+
+  .card-modern::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-ocean via-brass to-ocean opacity-0 transition-opacity duration-300;
+  }
+
+  .card-modern:hover::before {
+    @apply opacity-100;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-ocean via-navy to-ocean bg-clip-text text-transparent;
+  }
+
+  .floating-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-ocean/10 to-brass/10 text-ocean border border-ocean/20;
+  }
+
+  .image-modern {
+    @apply relative overflow-hidden rounded-lg shadow-lg;
+  }
+
+  .image-modern img {
+    @apply w-full h-full object-cover transition-transform duration-500 hover:scale-105;
+  }
+
+  .section-accent {
+    @apply relative;
+  }
+
+  .section-accent::before {
+    content: '';
+    @apply absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-ocean/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2;
   }
 }
