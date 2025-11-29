@@ -8,44 +8,42 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Nautic Discovery - Ocean Depths Theme */
-    --background: 217 90% 8%;
-    --foreground: 200 20% 98%;
+    /* Nautic Discovery - Heritage & Modern Theme */
+    --background: 0 0% 98%;
+    --foreground: 215 25% 15%;
 
-    --card: 217 80% 12%;
-    --card-foreground: 200 20% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
 
-    --popover: 217 85% 10%;
-    --popover-foreground: 200 20% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
 
-    --primary: 217 90% 21%;
-    --primary-foreground: 200 20% 98%;
+    --primary: 210 100% 12%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 224 64% 33%;
-    --secondary-foreground: 200 20% 98%;
+    --secondary: 210 20% 92%;
+    --secondary-foreground: 215 25% 15%;
 
-    --muted: 217 70% 15%;
-    --muted-foreground: 200 15% 70%;
+    --muted: 210 15% 95%;
+    --muted-foreground: 215 15% 45%;
 
-    --accent: 189 94% 43%;
-    --accent-foreground: 217 90% 10%;
+    --accent: 195 75% 35%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 200 20% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217 50% 20%;
-    --input: 217 50% 20%;
-    --ring: 189 94% 43%;
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 210 100% 12%;
 
-    --radius: 1.5rem;
+    --radius: 0.5rem;
 
-    /* Glass effects */
-    --glass-light: 0 0% 100%;
-    --glass-dark: 217 90% 10%;
-    
-    /* Glow effects */
-    --glow-primary: 217 90% 21%;
-    --glow-accent: 189 94% 43%;
+    /* Heritage colors */
+    --navy: 210 100% 12%;
+    --ocean: 195 75% 35%;
+    --brass: 40 65% 48%;
+    --cream: 40 25% 95%;
   }
 }
 
@@ -56,125 +54,56 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {
-  /* Liquid Glass utilities - more refraction, less blur */
-  .glass {
-    @apply backdrop-blur-sm bg-white/[0.05] border border-white/30;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.37),
-      inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
-  }
-
-  .glass-strong {
-    @apply backdrop-blur-sm bg-white/[0.08] border border-white/40;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.4),
-      inset 0 2px 2px 0 rgba(255, 255, 255, 0.2),
-      inset 0 -2px 2px 0 rgba(0, 0, 0, 0.1);
-  }
-
-  .glass-heavy {
-    @apply backdrop-blur-md bg-white/10 border-2 border-white/50;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.45),
-      inset 0 2px 4px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -2px 4px 0 rgba(0, 0, 0, 0.15);
-  }
-
-  .glass-dark {
-    @apply backdrop-blur-sm bg-black/10 border border-white/20;
-    box-shadow: 
-      0 8px 32px 0 rgba(0, 0, 0, 0.5),
-      inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
-  }
-
-  /* Liquid shine effects */
-  .liquid-shine::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
-  }
-
-  .liquid-shine:hover::before {
-    left: 100%;
-  }
-
-  /* Enhanced glow effects */
-  .glow {
-    box-shadow: 
-      0 0 40px rgba(6, 182, 212, 0.4),
-      0 0 80px rgba(6, 182, 212, 0.2),
-      inset 0 0 20px rgba(6, 182, 212, 0.1);
-  }
-
-  .glow-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .glow-hover:hover {
-    box-shadow: 
-      0 0 60px rgba(6, 182, 212, 0.6),
-      0 0 120px rgba(6, 182, 212, 0.3),
-      inset 0 0 30px rgba(6, 182, 212, 0.15);
-    transform: translateY(-2px);
-  }
-
-  /* Parallax */
-  .parallax {
-    transform: translateZ(0);
-    will-change: transform;
-  }
-
-  /* Refraction edge effect */
-  .refract-edge {
-    position: relative;
-  }
-
-  .refract-edge::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent 40%, transparent 60%, rgba(6, 182, 212, 0.3));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-}
-
-@layer components {
-  .section-container {
-    @apply max-w-7xl mx-auto px-6 lg:px-8 py-24;
+  .heading-display {
+    @apply text-6xl md:text-8xl font-bold tracking-tight;
   }
 
   .heading-xl {
-    @apply text-5xl md:text-7xl font-bold tracking-tight;
+    @apply text-4xl md:text-6xl font-semibold tracking-tight;
   }
 
   .heading-lg {
-    @apply text-4xl md:text-6xl font-bold tracking-tight;
+    @apply text-3xl md:text-5xl font-semibold tracking-tight;
   }
 
   .heading-md {
-    @apply text-3xl md:text-4xl font-bold tracking-tight;
+    @apply text-2xl md:text-3xl font-semibold;
   }
 
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-primary-foreground;
+  .text-body-lg {
+    @apply text-lg md:text-xl leading-relaxed;
+  }
+
+  .heritage-line {
+    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-32;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-6 lg:px-8;
   }
 }
