@@ -146,4 +146,20 @@ All colors MUST be HSL.
     content: '';
     @apply absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-ocean/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2;
   }
+
+  /* Sonar Scanner Effect */
+  .sonar-nav {
+    @apply relative overflow-hidden;
+  }
+
+  .sonar-nav::before {
+    content: '';
+    @apply absolute inset-0 w-[30%] bg-gradient-to-r from-transparent via-ocean/30 to-transparent;
+    transform: translateX(-100%);
+    filter: blur(8px);
+  }
+
+  .sonar-nav:hover::before {
+    @apply animate-sonar-scan;
+  }
 }
