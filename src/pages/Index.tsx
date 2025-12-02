@@ -55,7 +55,7 @@ const Index = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="sonar-nav text-sm font-medium text-foreground/70 hover:text-navy transition-colors px-3 py-2"
+                  className="text-sm font-medium text-foreground/70 hover:text-navy transition-colors"
                 >
                   {item.label}
                 </button>
