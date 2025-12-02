@@ -135,10 +135,12 @@ All colors MUST be HSL.
     @apply absolute inset-0 w-[40%] bg-gradient-to-r from-transparent via-ocean/40 to-transparent;
     transform: translateX(-100%) skewX(-20deg);
     filter: blur(4px);
+    animation-play-state: paused;
   }
 
   .floating-badge:hover::before {
-    @apply animate-sonar-scan;
+    animation: sonar-scan 2s ease-in-out infinite;
+    animation-play-state: running;
   }
 
   .image-modern {

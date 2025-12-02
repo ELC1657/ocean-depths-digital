@@ -88,7 +88,8 @@ export default {
         },
         "sonar-scan": {
           "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(300%)" },
+          "50%": { transform: "translateX(300%)" },
+          "100%": { transform: "translateX(-100%)" },
         },
       },
       animation: {
@@ -97,7 +98,7 @@ export default {
         "fade-in": "fade-in 0.6s ease-out",
         "slide-up": "slide-up 0.6s ease-out",
         "float": "float 3s ease-in-out infinite",
-        "sonar-scan": "sonar-scan 1.5s ease-in-out",
+        "sonar-scan": "sonar-scan 2s ease-in-out infinite",
       },
       fontFamily: {
         serif: ['Playfair Display', 'Georgia', 'serif'],
