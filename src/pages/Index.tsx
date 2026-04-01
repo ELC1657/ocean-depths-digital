@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Mail, MapPin, ChevronRight, Waves, Anchor, Target, ExternalLink, Globe } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Counter from "@/components/Counter";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
