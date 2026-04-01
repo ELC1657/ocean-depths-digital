@@ -406,8 +406,7 @@ const Index = () => {
                 </div>
               </ScrollReveal>
             ))}
-              </ScrollReveal>
-            ))}
+
           </div>
         </div>
       </section>
