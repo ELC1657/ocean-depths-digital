@@ -11,6 +11,12 @@ import teamImage from "@/assets/team-submarine.jpg";
 import shipwreckImage from "@/assets/shipwreck-scan.jpg";
 import martinImage from "@/assets/martin-wenzel.jpg";
 import joergImage from "@/assets/joerg-mathieu.jpg";
+import mercedesImg from "@/assets/mercedes-project.jpg";
+import t19Img from "@/assets/t19-project.jpg";
+import merchantImg from "@/assets/merchant-royal.jpg";
+import karawangImg from "@/assets/karawang-project.jpg";
+import forbesImg from "@/assets/forbes-project.jpg";
+import bellevueImg from "@/assets/bellevue-project.jpg";
 
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
