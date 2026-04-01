@@ -115,6 +115,10 @@ export default {
         "slide-up": "slide-up 0.6s ease-out",
         "float": "float 3s ease-in-out infinite",
         "sonar-scan": "sonar-scan 2s ease-in-out infinite",
+        "reveal-left": "reveal-left 0.8s ease-out forwards",
+        "reveal-right": "reveal-right 0.8s ease-out forwards",
+        "reveal-up": "reveal-up 0.8s ease-out forwards",
+        "image-wipe": "image-wipe 0.8s ease-out 0.2s forwards",
       },
       fontFamily: {
         serif: ['Playfair Display', 'Georgia', 'serif'],
