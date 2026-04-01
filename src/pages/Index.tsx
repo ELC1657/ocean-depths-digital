@@ -285,6 +285,7 @@ const Index = () => {
                     "Search and documentation of the sunken steamship Mercedes in Lago Maggiore — a fascinating piece of Swiss maritime history."
                   ),
                   highlight: t("Aktuelle Tauchgänge", "Current Dives"),
+                  image: mercedesImg,
                 },
                 {
                   title: "Torpediniera T19",
@@ -295,6 +296,7 @@ const Index = () => {
                     "Exploration of the Italian torpedo boat T19, which sank to the bottom of Lago Maggiore during World War II."
                   ),
                   highlight: t("Historische Dokumentation", "Historical Documentation"),
+                  image: t19Img,
                 },
                 {
                   title: t("Handelsschiff 17. Jhd.", "17th Century Merchant Ship"),
@@ -305,25 +307,34 @@ const Index = () => {
                     "Search for a 17th-century merchant ship in the English Channel — the dream of a great treasure discovery."
                   ),
                   highlight: t("Schatzsuche", "Treasure Hunt"),
+                  image: merchantImg,
                 },
               ].map((project, index) => (
                 <ScrollReveal key={index} delay={index * 150}>
-                  <div className="card-modern p-8 group cursor-pointer relative">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-medium px-3 py-1 rounded-full bg-green-100 text-green-700">
+                  <div className="card-modern group cursor-pointer relative overflow-hidden rounded-lg">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <span className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full bg-green-500/80 text-white backdrop-blur-sm">
                         {project.status}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-serif font-semibold text-navy mb-3 group-hover:gradient-text transition-all">
-                      {project.title}
-                    </h3>
-                    <div className="flex items-center text-sm text-muted-foreground mb-4">
-                      <MapPin className="w-4 h-4 mr-2 text-ocean" />
-                      {project.location}
-                    </div>
-                    <p className="text-foreground/70 leading-relaxed text-sm mb-4">{project.description}</p>
-                    <div className="pt-3 border-t border-border/50">
-                      <span className="text-xs font-medium text-ocean">{project.highlight}</span>
+                    <div className="p-6">
+                      <h3 className="text-xl font-serif font-semibold text-navy mb-2">
+                        {project.title}
+                      </h3>
+                      <div className="flex items-center text-sm text-muted-foreground mb-3">
+                        <MapPin className="w-4 h-4 mr-2 text-ocean" />
+                        {project.location}
+                      </div>
+                      <p className="text-foreground/70 leading-relaxed text-sm mb-3">{project.description}</p>
+                      <div className="pt-3 border-t border-border/50">
+                        <span className="text-xs font-medium text-ocean">{project.highlight}</span>
+                      </div>
                     </div>
                   </div>
                 </ScrollReveal>
