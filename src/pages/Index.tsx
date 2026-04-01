@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Mail, MapPin, ChevronRight, Waves, Anchor, Target, ExternalLink, Globe } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Counter from "@/components/Counter";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -114,30 +113,6 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Animated stats strip */}
-            <div className="flex flex-wrap gap-6 md:gap-10 mb-12 text-white/80">
-              <div className="flex items-center gap-2">
-                <Anchor className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={200} suffix="+" />
-                </span>
-                <span className="text-sm">{t("Wracks erforscht", "Wrecks Explored")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={15} />
-                </span>
-                <span className="text-sm">{t("Länder", "Countries")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={25} suffix="+" />
-                </span>
-                <span className="text-sm">{t("Jahre Erfahrung", "Years of Experience")}</span>
-              </div>
-            </div>
 
             <Button
               onClick={() => scrollToSection("mission")}
@@ -215,28 +190,6 @@ const Index = () => {
                       "We combine cutting-edge sonar mapping, ROV technology, and diving expertise with meticulous historical research — from ancient merchant ships in the Mediterranean to warships in the Atlantic."
                     )}
                   </p>
-                </div>
-
-                {/* Stats row */}
-                <div className="grid grid-cols-3 gap-4 pt-4">
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={25} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Jahre aktiv", "Years Active")}</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={200} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Wracks dokumentiert", "Wrecks Documented")}</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={1500} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Artefakte geborgen", "Artifacts Recovered")}</div>
-                  </div>
                 </div>
               </div>
             </ScrollReveal>
