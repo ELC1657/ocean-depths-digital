@@ -108,9 +108,32 @@ All colors MUST be HSL.
     @apply max-w-7xl mx-auto px-6;
   }
 
+  /* Nav link underline animation */
+  .nav-link-underline {
+    @apply relative text-sm font-medium text-foreground/70 hover:text-navy transition-colors;
+  }
+
+  .nav-link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[2px] bg-ocean origin-left transition-transform duration-300 ease-out;
+    transform: scaleX(0);
+  }
+
+  .nav-link-underline:hover::after {
+    transform: scaleX(1);
+  }
+
   /* Modern Design Elements */
   .card-modern {
-    @apply relative overflow-hidden bg-white rounded-lg border border-border/50 hover:border-ocean/30 transition-all duration-300 hover:shadow-xl;
+    @apply relative overflow-hidden bg-white rounded-lg border border-border/50 hover:border-ocean/30 transition-all duration-300;
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
+
+  .card-modern:hover {
+    @apply shadow-2xl;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px hsl(var(--ocean) / 0.15), 0 8px 16px -8px hsl(var(--navy) / 0.1);
   }
 
   .card-modern::before {
@@ -143,6 +166,25 @@ All colors MUST be HSL.
     animation-play-state: running;
   }
 
+  /* Image reveal effect */
+  .image-reveal {
+    @apply relative overflow-hidden rounded-lg;
+  }
+
+  .image-reveal::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-navy to-ocean;
+    transform: translateX(0);
+  }
+
+  .image-reveal.revealed::after {
+    animation: image-wipe 0.8s ease-out 0.2s forwards;
+  }
+
+  .image-reveal img {
+    @apply w-full h-full object-cover;
+  }
+
   .image-modern {
     @apply relative overflow-hidden rounded-lg shadow-lg;
   }
@@ -160,4 +202,20 @@ All colors MUST be HSL.
     @apply absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-ocean/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2;
   }
 
+  /* Scroll reveal states */
+  .scroll-hidden {
+    opacity: 0;
+  }
+
+  .scroll-reveal-up {
+    @apply animate-reveal-up;
+  }
+
+  .scroll-reveal-left {
+    @apply animate-reveal-left;
+  }
+
+  .scroll-reveal-right {
+    @apply animate-reveal-right;
+  }
 }
