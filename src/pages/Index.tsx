@@ -114,30 +114,6 @@ const Index = () => {
               </p>
             </div>
 
-            {/* Animated stats strip */}
-            <div className="flex flex-wrap gap-6 md:gap-10 mb-12 text-white/80">
-              <div className="flex items-center gap-2">
-                <Anchor className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={200} suffix="+" />
-                </span>
-                <span className="text-sm">{t("Wracks erforscht", "Wrecks Explored")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={15} />
-                </span>
-                <span className="text-sm">{t("Länder", "Countries")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-brass" />
-                <span className="text-lg font-semibold text-white">
-                  <Counter target={25} suffix="+" />
-                </span>
-                <span className="text-sm">{t("Jahre Erfahrung", "Years of Experience")}</span>
-              </div>
-            </div>
 
             <Button
               onClick={() => scrollToSection("mission")}
