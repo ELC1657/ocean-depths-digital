@@ -177,6 +177,11 @@ All colors MUST be HSL.
     transform: translateX(0);
   }
 
+  @keyframes image-wipe {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(101%); }
+  }
+
   .image-reveal.revealed::after {
     animation: image-wipe 0.8s ease-out 0.2s forwards;
   }
