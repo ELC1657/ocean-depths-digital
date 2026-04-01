@@ -11,6 +11,12 @@ import teamImage from "@/assets/team-submarine.jpg";
 import shipwreckImage from "@/assets/shipwreck-scan.jpg";
 import martinImage from "@/assets/martin-wenzel.jpg";
 import joergImage from "@/assets/joerg-mathieu.jpg";
+import mercedesImg from "@/assets/mercedes-project.jpg";
+import t19Img from "@/assets/t19-project.jpg";
+import merchantImg from "@/assets/merchant-royal.jpg";
+import karawangImg from "@/assets/karawang-project.jpg";
+import forbesImg from "@/assets/forbes-project.jpg";
+import bellevueImg from "@/assets/bellevue-project.jpg";
 
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -279,6 +285,7 @@ const Index = () => {
                     "Search and documentation of the sunken steamship Mercedes in Lago Maggiore — a fascinating piece of Swiss maritime history."
                   ),
                   highlight: t("Aktuelle Tauchgänge", "Current Dives"),
+                  image: mercedesImg,
                 },
                 {
                   title: "Torpediniera T19",
@@ -289,6 +296,7 @@ const Index = () => {
                     "Exploration of the Italian torpedo boat T19, which sank to the bottom of Lago Maggiore during World War II."
                   ),
                   highlight: t("Historische Dokumentation", "Historical Documentation"),
+                  image: t19Img,
                 },
                 {
                   title: t("Handelsschiff 17. Jhd.", "17th Century Merchant Ship"),
@@ -299,25 +307,34 @@ const Index = () => {
                     "Search for a 17th-century merchant ship in the English Channel — the dream of a great treasure discovery."
                   ),
                   highlight: t("Schatzsuche", "Treasure Hunt"),
+                  image: merchantImg,
                 },
               ].map((project, index) => (
                 <ScrollReveal key={index} delay={index * 150}>
-                  <div className="card-modern p-8 group cursor-pointer relative">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-medium px-3 py-1 rounded-full bg-green-100 text-green-700">
+                  <div className="card-modern group cursor-pointer relative overflow-hidden rounded-lg">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      <span className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full bg-green-500/80 text-white backdrop-blur-sm">
                         {project.status}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-serif font-semibold text-navy mb-3 group-hover:gradient-text transition-all">
-                      {project.title}
-                    </h3>
-                    <div className="flex items-center text-sm text-muted-foreground mb-4">
-                      <MapPin className="w-4 h-4 mr-2 text-ocean" />
-                      {project.location}
-                    </div>
-                    <p className="text-foreground/70 leading-relaxed text-sm mb-4">{project.description}</p>
-                    <div className="pt-3 border-t border-border/50">
-                      <span className="text-xs font-medium text-ocean">{project.highlight}</span>
+                    <div className="p-6">
+                      <h3 className="text-xl font-serif font-semibold text-navy mb-2">
+                        {project.title}
+                      </h3>
+                      <div className="flex items-center text-sm text-muted-foreground mb-3">
+                        <MapPin className="w-4 h-4 mr-2 text-ocean" />
+                        {project.location}
+                      </div>
+                      <p className="text-foreground/70 leading-relaxed text-sm mb-3">{project.description}</p>
+                      <div className="pt-3 border-t border-border/50">
+                        <span className="text-xs font-medium text-ocean">{project.highlight}</span>
+                      </div>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -340,6 +357,7 @@ const Index = () => {
                   "Erforschung eines historischen Wracks vor der Küste von Karawang, Indonesien — ein Zeugnis des Seehandels in Südostasien.",
                   "Exploration of a historic wreck off the coast of Karawang, Indonesia — a testament to maritime trade in Southeast Asia."
                 ),
+                image: karawangImg,
               },
               {
                 title: t("Freibeuter Forbes", "Privateer Forbes"),
@@ -349,6 +367,7 @@ const Index = () => {
                   "Auf den Spuren des berüchtigten Freibeuters Forbes in den Gewässern Indonesiens — Abenteuer und Geschichte vereint.",
                   "Following the trail of the infamous privateer Forbes in Indonesian waters — adventure and history combined."
                 ),
+                image: forbesImg,
               },
               {
                 title: "Bellevue",
@@ -358,26 +377,36 @@ const Index = () => {
                   "Dokumentation des Wracks der Bellevue im Thunersee — ein Stück lokaler Schweizer Schifffahrtsgeschichte.",
                   "Documentation of the Bellevue wreck in Lake Thun — a piece of local Swiss maritime history."
                 ),
+                image: bellevueImg,
               },
             ].map((project, index) => (
               <ScrollReveal key={index} delay={index * 150}>
-                <div className="card-modern p-8 group cursor-pointer relative">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                <div className="card-modern group cursor-pointer relative overflow-hidden rounded-lg">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <span className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full bg-muted/80 text-foreground backdrop-blur-sm">
                       {project.status}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-serif font-semibold text-navy mb-3 group-hover:gradient-text transition-all">
-                    {project.title}
-                  </h3>
-                  <div className="flex items-center text-sm text-muted-foreground mb-4">
-                    <MapPin className="w-4 h-4 mr-2 text-ocean" />
-                    {project.location}
+                  <div className="p-6">
+                    <h3 className="text-xl font-serif font-semibold text-navy mb-2">
+                      {project.title}
+                    </h3>
+                    <div className="flex items-center text-sm text-muted-foreground mb-3">
+                      <MapPin className="w-4 h-4 mr-2 text-ocean" />
+                      {project.location}
+                    </div>
+                    <p className="text-foreground/70 leading-relaxed text-sm">{project.description}</p>
                   </div>
-                  <p className="text-foreground/70 leading-relaxed text-sm">{project.description}</p>
                 </div>
               </ScrollReveal>
             ))}
+
           </div>
         </div>
       </section>
