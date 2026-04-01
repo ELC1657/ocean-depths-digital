@@ -217,54 +217,7 @@ const Index = () => {
                   </p>
                 </div>
 
-                {/* Stats row */}
-                <div className="grid grid-cols-3 gap-4 pt-4">
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={25} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Jahre aktiv", "Years Active")}</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={200} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Wracks dokumentiert", "Wrecks Documented")}</div>
-                  </div>
-                  <div className="text-center p-4 rounded-lg bg-muted/50">
-                    <div className="text-2xl font-serif font-bold text-navy">
-                      <Counter target={1500} suffix="+" />
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{t("Artefakte geborgen", "Artifacts Recovered")}</div>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
 
-            <ScrollReveal direction="right">
-              <ImageReveal
-                src={shipwreckImage}
-                alt={t("Unterwasser-Wrack-Scan", "Underwater Wreck Scan")}
-                className="h-[450px]"
-                imgClassName="w-full h-full object-cover"
-              />
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="section-padding">
-        <div className="container-wide">
-          <div className="text-center mb-16">
-            <ScrollReveal>
-              <span className="floating-badge mb-4">{t("Entdeckungen", "Discoveries")}</span>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-navy mb-4">{t("Projekte", "Projects")}</h2>
-              <div className="heritage-line max-w-24 mx-auto" />
-            </ScrollReveal>
-          </div>
 
           {/* Laufende Projekte */}
           <ScrollReveal>
