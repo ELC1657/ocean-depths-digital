@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Mail, MapPin, ChevronRight, Waves, Anchor, Target, ExternalLink } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, Anchor, Target, ExternalLink, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Counter from "@/components/Counter";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
+import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
 import teamImage from "@/assets/team-submarine.jpg";
@@ -14,6 +15,7 @@ import joergImage from "@/assets/joerg-mathieu.jpg";
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const { lang, toggleLang, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,11 +32,11 @@ const Index = () => {
   };
 
   const navItems = [
-    { id: "mission", label: "Mission" },
-    { id: "about", label: "Über uns" },
-    { id: "projects", label: "Projekte" },
-    { id: "team", label: "Team" },
-    { id: "contact", label: "Kontakt" },
+    { id: "mission", label: t("Mission", "Mission") },
+    { id: "about", label: t("Über uns", "About") },
+    { id: "projects", label: t("Projekte", "Projects") },
+    { id: "team", label: t("Team", "Team") },
+    { id: "contact", label: t("Kontakt", "Contact") },
   ];
 
   return (
@@ -63,6 +65,13 @@ const Index = () => {
                   {item.label}
                 </button>
               ))}
+              <button
+                onClick={toggleLang}
+                className="flex items-center gap-1.5 text-sm font-medium text-ocean hover:text-navy transition-colors px-3 py-1.5 rounded-full border border-ocean/20 hover:border-ocean/40"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                {lang === "de" ? "EN" : "DE"}
+              </button>
             </div>
           </div>
         </div>
@@ -82,14 +91,20 @@ const Index = () => {
         <div className="relative z-10 container-wide pt-20">
           <div className="max-w-4xl animate-fade-in">
             <h1 className="heading-display text-white mb-6 font-serif">
-              Faszination Wracksuche
+              {t("Faszination Wracksuche", "Fascination of Wreck Hunting")}
             </h1>
             <div className="space-y-3 mb-8">
               <p className="text-2xl md:text-3xl text-white/95 font-light">
-                Geschichte · Technik · Teamwork · Abenteuer
+                {t(
+                  "Geschichte · Technik · Teamwork · Abenteuer",
+                  "History · Technology · Teamwork · Adventure"
+                )}
               </p>
               <p className="text-lg md:text-xl text-white/80 font-light">
-                Entdeckung der versunkenen Schätze — Discovering the Treasures of the Deep
+                {t(
+                  "Entdeckung der versunkenen Schätze — Discovering the Treasures of the Deep",
+                  "Discovering the Treasures of the Deep"
+                )}
               </p>
             </div>
 
@@ -100,21 +115,21 @@ const Index = () => {
                 <span className="text-lg font-semibold text-white">
                   <Counter target={200} suffix="+" />
                 </span>
-                <span className="text-sm">Wracks erforscht</span>
+                <span className="text-sm">{t("Wracks erforscht", "Wrecks Explored")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-brass" />
                 <span className="text-lg font-semibold text-white">
                   <Counter target={15} />
                 </span>
-                <span className="text-sm">Länder</span>
+                <span className="text-sm">{t("Länder", "Countries")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-brass" />
                 <span className="text-lg font-semibold text-white">
                   <Counter target={25} suffix="+" />
                 </span>
-                <span className="text-sm">Jahre Erfahrung</span>
+                <span className="text-sm">{t("Jahre Erfahrung", "Years of Experience")}</span>
               </div>
             </div>
 
@@ -123,7 +138,7 @@ const Index = () => {
               size="lg"
               className="bg-navy hover:bg-navy/90 text-white px-8 h-12 font-medium shadow-lg hover:shadow-xl transition-all"
             >
-              Unsere Mission entdecken
+              {t("Unsere Mission entdecken", "Discover Our Mission")}
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
@@ -142,13 +157,15 @@ const Index = () => {
             </blockquote>
           </ScrollReveal>
           <ScrollReveal delay={200}>
-            <p className="text-lg text-muted-foreground mb-6">— Mac Mace, Wracksucher Scilly Islands</p>
+            <p className="text-lg text-muted-foreground mb-6">
+              — Mac Mace, {t("Wracksucher Scilly Islands", "Wreck Hunter, Scilly Islands")}
+            </p>
             <div className="heritage-line max-w-24 mx-auto mb-8" />
             <p className="text-base text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-              Jede grosse Entdeckung verlangt Geduld, Investition und den unerschütterlichen Glauben
-              an das, was unter der Oberfläche verborgen liegt. Unsere Expeditionen werden angetrieben
-              von der Überzeugung, dass die grössten Geschichten der Menschheit noch darauf warten,
-              erzählt zu werden.
+              {t(
+                "Jede grosse Entdeckung verlangt Geduld, Investition und den unerschütterlichen Glauben an das, was unter der Oberfläche verborgen liegt. Unsere Expeditionen werden angetrieben von der Überzeugung, dass die grössten Geschichten der Menschheit noch darauf warten, erzählt zu werden.",
+                "Every great discovery demands patience, investment, and an unwavering belief in what lies hidden beneath the surface. Our expeditions are driven by the conviction that humanity's greatest stories are still waiting to be told."
+              )}
             </p>
           </ScrollReveal>
         </div>
@@ -159,10 +176,10 @@ const Index = () => {
         <div className="container-wide">
           <div className="text-center mb-16">
             <ScrollReveal>
-              <span className="floating-badge mb-4">Unterwasser-Erforschung</span>
+              <span className="floating-badge mb-4">{t("Unterwasser-Erforschung", "Underwater Exploration")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-navy mb-4">Über Nautic Discovery</h2>
+              <h2 className="heading-xl font-serif text-navy mb-4">{t("Über Nautic Discovery", "About Nautic Discovery")}</h2>
               <div className="heritage-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
@@ -171,23 +188,26 @@ const Index = () => {
             <ScrollReveal direction="left">
               <div className="space-y-6 text-body-lg text-foreground/80">
                 <p className="leading-relaxed">
-                  Nautic Discovery hat sich der Suche nach bisher unentdeckten Schiffwracks im In- und
-                  Ausland verschrieben. Die Suche ist dabei immer mit spannender Technik und oft auch
-                  mit Abenteuer verbunden.
+                  {t(
+                    "Nautic Discovery hat sich der Suche nach bisher unentdeckten Schiffwracks im In- und Ausland verschrieben. Die Suche ist dabei immer mit spannender Technik und oft auch mit Abenteuer verbunden.",
+                    "Nautic Discovery is dedicated to the search for previously undiscovered shipwrecks both domestically and abroad. The search is always linked to exciting technology and often to adventure."
+                  )}
                 </p>
 
                 <p className="leading-relaxed">
-                  Die Faszination, Wracks als Zeitkapsel der Geschichte zu entdecken und zu dokumentieren
-                  ist unsere Hauptmotivation. Bei spezifischen Projekten im Meer schwingt jedoch auch
-                  der Traum nach dem grossen Schatzfund mit.
+                  {t(
+                    "Die Faszination, Wracks als Zeitkapsel der Geschichte zu entdecken und zu dokumentieren ist unsere Hauptmotivation. Bei spezifischen Projekten im Meer schwingt jedoch auch der Traum nach dem grossen Schatzfund mit.",
+                    "The fascination of discovering and documenting wrecks as time capsules of history is our main motivation. For specific ocean projects, the dream of a great treasure find also resonates."
+                  )}
                 </p>
 
                 <div className="flex items-start space-x-4 p-6 bg-gradient-to-br from-ocean/5 to-brass/5 rounded-lg border border-ocean/10">
                   <Waves className="w-6 h-6 text-ocean mt-1 flex-shrink-0" />
                   <p className="text-sm text-foreground/70">
-                    Wir kombinieren modernste Sonar-Kartierung, ROV-Technologie und Taucherfahrung
-                    mit akribischer historischer Forschung — von antiken Handelsschiffen im Mittelmeer
-                    bis zu Kriegsschiffen im Atlantik.
+                    {t(
+                      "Wir kombinieren modernste Sonar-Kartierung, ROV-Technologie und Taucherfahrung mit akribischer historischer Forschung — von antiken Handelsschiffen im Mittelmeer bis zu Kriegsschiffen im Atlantik.",
+                      "We combine cutting-edge sonar mapping, ROV technology, and diving expertise with meticulous historical research — from ancient merchant ships in the Mediterranean to warships in the Atlantic."
+                    )}
                   </p>
                 </div>
 
@@ -197,19 +217,19 @@ const Index = () => {
                     <div className="text-2xl font-serif font-bold text-navy">
                       <Counter target={25} suffix="+" />
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Jahre aktiv</div>
+                    <div className="text-xs text-muted-foreground mt-1">{t("Jahre aktiv", "Years Active")}</div>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-muted/50">
                     <div className="text-2xl font-serif font-bold text-navy">
                       <Counter target={200} suffix="+" />
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Wracks dokumentiert</div>
+                    <div className="text-xs text-muted-foreground mt-1">{t("Wracks dokumentiert", "Wrecks Documented")}</div>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-muted/50">
                     <div className="text-2xl font-serif font-bold text-navy">
                       <Counter target={1500} suffix="+" />
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Artefakte geborgen</div>
+                    <div className="text-xs text-muted-foreground mt-1">{t("Artefakte geborgen", "Artifacts Recovered")}</div>
                   </div>
                 </div>
               </div>
@@ -218,7 +238,7 @@ const Index = () => {
             <ScrollReveal direction="right">
               <ImageReveal
                 src={shipwreckImage}
-                alt="Unterwasser-Wrack-Scan"
+                alt={t("Unterwasser-Wrack-Scan", "Underwater Wreck Scan")}
                 className="h-[450px]"
                 imgClassName="w-full h-full object-cover"
               />
@@ -232,17 +252,17 @@ const Index = () => {
         <div className="container-wide">
           <div className="text-center mb-16">
             <ScrollReveal>
-              <span className="floating-badge mb-4">Entdeckungen</span>
+              <span className="floating-badge mb-4">{t("Entdeckungen", "Discoveries")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-navy mb-4">Projekte</h2>
+              <h2 className="heading-xl font-serif text-navy mb-4">{t("Projekte", "Projects")}</h2>
               <div className="heritage-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
 
           {/* Laufende Projekte */}
           <ScrollReveal>
-            <h3 className="heading-md font-serif text-navy mb-8">Laufende Projekte</h3>
+            <h3 className="heading-md font-serif text-navy mb-8">{t("Laufende Projekte", "Ongoing Projects")}</h3>
           </ScrollReveal>
 
           <div className="relative mb-16">
@@ -253,23 +273,32 @@ const Index = () => {
                 {
                   title: "Mercedes",
                   location: "Lago Maggiore",
-                  status: "Aktiv",
-                  description: "Suche und Dokumentation des versunkenen Dampfschiffs Mercedes im Lago Maggiore — ein faszinierendes Stück Schweizer Schifffahrtsgeschichte.",
-                  highlight: "Aktuelle Tauchgänge",
+                  status: t("Aktiv", "Active"),
+                  description: t(
+                    "Suche und Dokumentation des versunkenen Dampfschiffs Mercedes im Lago Maggiore — ein faszinierendes Stück Schweizer Schifffahrtsgeschichte.",
+                    "Search and documentation of the sunken steamship Mercedes in Lago Maggiore — a fascinating piece of Swiss maritime history."
+                  ),
+                  highlight: t("Aktuelle Tauchgänge", "Current Dives"),
                 },
                 {
                   title: "Torpediniera T19",
                   location: "Lago Maggiore",
-                  status: "Aktiv",
-                  description: "Erforschung des italienischen Torpedoboots T19, das im Zweiten Weltkrieg auf dem Grund des Lago Maggiore versank.",
-                  highlight: "Historische Dokumentation",
+                  status: t("Aktiv", "Active"),
+                  description: t(
+                    "Erforschung des italienischen Torpedoboots T19, das im Zweiten Weltkrieg auf dem Grund des Lago Maggiore versank.",
+                    "Exploration of the Italian torpedo boat T19, which sank to the bottom of Lago Maggiore during World War II."
+                  ),
+                  highlight: t("Historische Dokumentation", "Historical Documentation"),
                 },
                 {
-                  title: "Handelsschiff 17. Jhd.",
-                  location: "Ärmelkanal",
-                  status: "Aktiv",
-                  description: "Suche nach einem Handelsschiff aus dem 17. Jahrhundert im Ärmelkanal — der Traum vom grossen Schatzfund.",
-                  highlight: "Schatzsuche",
+                  title: t("Handelsschiff 17. Jhd.", "17th Century Merchant Ship"),
+                  location: t("Ärmelkanal", "English Channel"),
+                  status: t("Aktiv", "Active"),
+                  description: t(
+                    "Suche nach einem Handelsschiff aus dem 17. Jahrhundert im Ärmelkanal — der Traum vom grossen Schatzfund.",
+                    "Search for a 17th-century merchant ship in the English Channel — the dream of a great treasure discovery."
+                  ),
+                  highlight: t("Schatzsuche", "Treasure Hunt"),
                 },
               ].map((project, index) => (
                 <ScrollReveal key={index} delay={index * 150}>
@@ -298,28 +327,37 @@ const Index = () => {
 
           {/* Verschiedene Projekte */}
           <ScrollReveal>
-            <h3 className="heading-md font-serif text-navy mb-8">Verschiedene Projekte</h3>
+            <h3 className="heading-md font-serif text-navy mb-8">{t("Verschiedene Projekte", "Various Projects")}</h3>
           </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                title: "Karawang Wrack",
-                location: "Indonesien",
-                status: "Abgeschlossen",
-                description: "Erforschung eines historischen Wracks vor der Küste von Karawang, Indonesien — ein Zeugnis des Seehandels in Südostasien.",
+                title: t("Karawang Wrack", "Karawang Wreck"),
+                location: t("Indonesien", "Indonesia"),
+                status: t("Abgeschlossen", "Completed"),
+                description: t(
+                  "Erforschung eines historischen Wracks vor der Küste von Karawang, Indonesien — ein Zeugnis des Seehandels in Südostasien.",
+                  "Exploration of a historic wreck off the coast of Karawang, Indonesia — a testament to maritime trade in Southeast Asia."
+                ),
               },
               {
-                title: "Freibeuter Forbes",
-                location: "Indonesien",
-                status: "Abgeschlossen",
-                description: "Auf den Spuren des berüchtigten Freibeuters Forbes in den Gewässern Indonesiens — Abenteuer und Geschichte vereint.",
+                title: t("Freibeuter Forbes", "Privateer Forbes"),
+                location: t("Indonesien", "Indonesia"),
+                status: t("Abgeschlossen", "Completed"),
+                description: t(
+                  "Auf den Spuren des berüchtigten Freibeuters Forbes in den Gewässern Indonesiens — Abenteuer und Geschichte vereint.",
+                  "Following the trail of the infamous privateer Forbes in Indonesian waters — adventure and history combined."
+                ),
               },
               {
                 title: "Bellevue",
-                location: "Thunersee",
-                status: "Abgeschlossen",
-                description: "Dokumentation des Wracks der Bellevue im Thunersee — ein Stück lokaler Schweizer Schifffahrtsgeschichte.",
+                location: t("Thunersee", "Lake Thun"),
+                status: t("Abgeschlossen", "Completed"),
+                description: t(
+                  "Dokumentation des Wracks der Bellevue im Thunersee — ein Stück lokaler Schweizer Schifffahrtsgeschichte.",
+                  "Documentation of the Bellevue wreck in Lake Thun — a piece of local Swiss maritime history."
+                ),
               },
             ].map((project, index) => (
               <ScrollReveal key={index} delay={index * 150}>
@@ -349,21 +387,20 @@ const Index = () => {
         <div className="container-wide">
           <div className="text-center mb-16">
             <ScrollReveal>
-              <span className="floating-badge mb-4">Gründer</span>
+              <span className="floating-badge mb-4">{t("Gründer", "Founders")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-navy mb-4">Team</h2>
+              <h2 className="heading-xl font-serif text-navy mb-4">{t("Team", "Team")}</h2>
               <div className="heritage-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
 
           <ScrollReveal>
             <p className="text-body-lg text-foreground/70 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
-              Nautic Discovery wurde von Jörg Mathieu und Martin Wenzel gegründet. Sie haben sich 2008
-              bei einer Wrackbergung über den gemeinsamen Freund Klaus Keppler† kennengelernt und haben
-              seither zusammen zahlreiche Wracks betaucht und neue Wrackprojekte initiiert. Für grössere
-              Projekte wird jeweils ein Team gebildet mit Fachleuten aus den Bereichen Literaturrecherche,
-              Hydrologie/Vermessung, Tauchtechnik und Archäologie.
+              {t(
+                "Nautic Discovery wurde von Jörg Mathieu und Martin Wenzel gegründet. Sie haben sich 2008 bei einer Wrackbergung über den gemeinsamen Freund Klaus Keppler† kennengelernt und haben seither zusammen zahlreiche Wracks betaucht und neue Wrackprojekte initiiert. Für grössere Projekte wird jeweils ein Team gebildet mit Fachleuten aus den Bereichen Literaturrecherche, Hydrologie/Vermessung, Tauchtechnik und Archäologie.",
+                "Nautic Discovery was founded by Jörg Mathieu and Martin Wenzel. They met in 2008 during a wreck recovery through their mutual friend Klaus Keppler† and have since dived numerous wrecks together and initiated new wreck projects. For larger projects, a team is assembled with specialists in literature research, hydrology/surveying, diving technology, and archaeology."
+              )}
             </p>
           </ScrollReveal>
 
@@ -376,10 +413,14 @@ const Index = () => {
                 <h3 className="text-2xl font-serif font-semibold text-navy text-center mb-2">
                   Jörg Mathieu
                 </h3>
-                <p className="text-ocean font-medium text-center mb-4 text-sm">Mitgründer & Technik</p>
+                <p className="text-ocean font-medium text-center mb-4 text-sm">
+                  {t("Mitgründer & Technik", "Co-Founder & Technology")}
+                </p>
                 <p className="text-foreground/70 leading-relaxed text-center text-sm">
-                  Experte für maritime Technik und Tauchtechnologie. Betreut den gesamten technischen
-                  Bereich von Nautic Discovery.
+                  {t(
+                    "Experte für maritime Technik und Tauchtechnologie. Betreut den gesamten technischen Bereich von Nautic Discovery.",
+                    "Expert in maritime technology and diving technology. Oversees all technical operations at Nautic Discovery."
+                  )}
                 </p>
               </div>
             </ScrollReveal>
@@ -392,10 +433,14 @@ const Index = () => {
                 <h3 className="text-2xl font-serif font-semibold text-navy text-center mb-2">
                   Martin Wenzel
                 </h3>
-                <p className="text-ocean font-medium text-center mb-4 text-sm">Mitgründer & Finanzierung</p>
+                <p className="text-ocean font-medium text-center mb-4 text-sm">
+                  {t("Mitgründer & Finanzierung", "Co-Founder & Finance")}
+                </p>
                 <p className="text-foreground/70 leading-relaxed text-center text-sm">
-                  Verantwortlich für die Finanzierung der externen Leistungen und strategische
-                  Projektplanung.
+                  {t(
+                    "Verantwortlich für die Finanzierung der externen Leistungen und strategische Projektplanung.",
+                    "Responsible for financing external services and strategic project planning."
+                  )}
                 </p>
               </div>
             </ScrollReveal>
@@ -405,7 +450,7 @@ const Index = () => {
             <div className="max-w-2xl mx-auto">
               <ImageReveal
                 src={teamImage}
-                alt="Team im U-Boot"
+                alt={t("Team im U-Boot", "Team in Submarine")}
                 className="h-[300px] rounded-lg"
                 imgClassName="w-full h-full object-cover rounded-lg"
               />
@@ -427,9 +472,9 @@ const Index = () => {
             </div>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <h2 className="heading-lg font-serif mb-6">Kontakt</h2>
+            <h2 className="heading-lg font-serif mb-6">{t("Kontakt", "Contact")}</h2>
             <p className="text-xl text-white/90 mb-4 leading-relaxed max-w-2xl mx-auto">
-              Kontaktpersonen: Jörg Mathieu & Martin Wenzel
+              {t("Kontaktpersonen: Jörg Mathieu & Martin Wenzel", "Contact: Jörg Mathieu & Martin Wenzel")}
             </p>
             <p className="text-lg text-white/70 mb-10">
               info@nauticdiscovery.com
@@ -441,7 +486,7 @@ const Index = () => {
                 size="lg"
                 className="bg-white hover:bg-white/95 text-navy px-8 h-12 font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all"
               >
-                E-Mail senden
+                {t("E-Mail senden", "Send Email")}
                 <ChevronRight className="ml-2 w-5 h-5" />
               </Button>
             </a>
