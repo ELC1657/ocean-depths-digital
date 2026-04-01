@@ -192,8 +192,33 @@ const Index = () => {
                     )}
                   </p>
                 </div>
+              </div>
+            </ScrollReveal>
 
+            <ScrollReveal direction="right">
+              <ImageReveal
+                src={shipwreckImage}
+                alt={t("Unterwasser-Wrack-Scan", "Underwater Wreck Scan")}
+                className="h-[450px]"
+                imgClassName="w-full h-full object-cover"
+              />
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
 
+      {/* Projects Section */}
+      <section id="projects" className="section-padding">
+        <div className="container-wide">
+          <div className="text-center mb-16">
+            <ScrollReveal>
+              <span className="floating-badge mb-4">{t("Entdeckungen", "Discoveries")}</span>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <h2 className="heading-xl font-serif text-navy mb-4">{t("Projekte", "Projects")}</h2>
+              <div className="heritage-line max-w-24 mx-auto" />
+            </ScrollReveal>
+          </div>
 
           {/* Laufende Projekte */}
           <ScrollReveal>
