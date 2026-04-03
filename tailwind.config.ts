@@ -49,15 +49,23 @@ export default {
         },
         navy: {
           DEFAULT: "hsl(var(--navy))",
+          light: "hsl(var(--navy-light))",
         },
         ocean: {
           DEFAULT: "hsl(var(--ocean))",
+          glow: "hsl(var(--ocean-glow))",
         },
         brass: {
           DEFAULT: "hsl(var(--brass))",
         },
         cream: {
           DEFAULT: "hsl(var(--cream))",
+        },
+        deep: {
+          DEFAULT: "hsl(var(--deep))",
+        },
+        abyss: {
+          DEFAULT: "hsl(var(--abyss))",
         },
       },
       borderRadius: {
@@ -107,6 +115,24 @@ export default {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(101%)" },
         },
+        "bubble": {
+          "0%": { transform: "translateY(0) scale(1)", opacity: "0.4" },
+          "50%": { opacity: "0.2" },
+          "100%": { transform: "translateY(-100vh) scale(0.3)", opacity: "0" },
+        },
+        "light-ray": {
+          "0%": { opacity: "0.3" },
+          "50%": { opacity: "0.08" },
+          "100%": { opacity: "0.3" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(195 100% 45% / 0.2)" },
+          "50%": { boxShadow: "0 0 40px hsl(195 100% 45% / 0.4), 0 0 80px hsl(195 100% 45% / 0.1)" },
+        },
+        "sonar-ping": {
+          "0%": { transform: "scale(0)", opacity: "0.6" },
+          "100%": { transform: "scale(3)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -119,6 +145,10 @@ export default {
         "reveal-right": "reveal-right 0.8s ease-out forwards",
         "reveal-up": "reveal-up 0.8s ease-out forwards",
         "image-wipe": "image-wipe 0.8s ease-out 0.2s forwards",
+        "bubble": "bubble 15s linear infinite",
+        "light-ray": "light-ray 8s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        "sonar-ping": "sonar-ping 3s ease-out infinite",
       },
       fontFamily: {
         serif: ['Playfair Display', 'Georgia', 'serif'],
