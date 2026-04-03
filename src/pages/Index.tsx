@@ -508,6 +508,11 @@ const Index = () => {
               © {new Date().getFullYear()} Nautic Discovery
             </p>
           </div>
+          <div className="mt-8 pt-6 border-t border-border text-center">
+            <p className="text-xs text-muted-foreground">
+              Website by <a href="https://studioarm.de" target="_blank" rel="noopener noreferrer" className="hover:text-ocean transition-colors font-medium">StudioARM</a>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
