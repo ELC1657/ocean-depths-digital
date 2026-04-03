@@ -510,7 +510,7 @@ const Index = () => {
           </div>
           <div className="mt-8 pt-6 border-t border-border text-center">
             <p className="text-xs text-muted-foreground">
-              Website by <a href="https://studioarm.de" target="_blank" rel="noopener noreferrer" className="hover:text-ocean transition-colors font-medium">StudioARM</a>
+              Website by <a href="https://studio-arm.com/" target="_blank" rel="noopener noreferrer" className="hover:text-ocean transition-colors font-medium">StudioARM</a>
             </p>
           </div>
         </div>
