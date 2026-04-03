@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
-import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
 import BubbleField from "@/components/BubbleField";
 import LightRays from "@/components/LightRays";
 import WaveDivider from "@/components/WaveDivider";
+import UnderwaterCanvas from "@/components/UnderwaterCanvas";
+import DepthMeter from "@/components/DepthMeter";
+import SonarSweep from "@/components/SonarSweep";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -24,19 +27,32 @@ const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const { lang, toggleLang, t } = useLanguage();
+  const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       setScrollY(window.scrollY);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Card mouse tracking for spotlight effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      document.querySelectorAll(".card-modern").forEach((card) => {
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        (card as HTMLElement).style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+        (card as HTMLElement).style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const navItems = [
@@ -47,20 +63,99 @@ const Index = () => {
     { id: "contact", label: t("Kontakt", "Contact") },
   ];
 
+  const ongoingProjects = [
+    {
+      title: "Mercedes",
+      location: "Lago Maggiore",
+      status: t("Aktiv", "Active"),
+      description: t(
+        "Suche und Dokumentation des versunkenen Dampfschiffs Mercedes im Lago Maggiore — ein faszinierendes Stück Schweizer Schifffahrtsgeschichte.",
+        "Search and documentation of the sunken steamship Mercedes in Lago Maggiore — a fascinating piece of Swiss maritime history."
+      ),
+      highlight: t("Aktuelle Tauchgänge", "Current Dives"),
+      image: mercedesImg,
+      depth: "210m",
+    },
+    {
+      title: "Torpediniera T19",
+      location: "Lago Maggiore",
+      status: t("Aktiv", "Active"),
+      description: t(
+        "Erforschung des italienischen Torpedoboots T19, das im Zweiten Weltkrieg auf dem Grund des Lago Maggiore versank.",
+        "Exploration of the Italian torpedo boat T19, which sank to the bottom of Lago Maggiore during World War II."
+      ),
+      highlight: t("Historische Dokumentation", "Historical Documentation"),
+      image: t19Img,
+      depth: "180m",
+    },
+    {
+      title: t("Handelsschiff 17. Jhd.", "17th Century Merchant Ship"),
+      location: t("Ärmelkanal", "English Channel"),
+      status: t("Aktiv", "Active"),
+      description: t(
+        "Suche nach einem Handelsschiff aus dem 17. Jahrhundert im Ärmelkanal — der Traum vom grossen Schatzfund.",
+        "Search for a 17th-century merchant ship in the English Channel — the dream of a great treasure discovery."
+      ),
+      highlight: t("Schatzsuche", "Treasure Hunt"),
+      image: merchantImg,
+      depth: "65m",
+    },
+  ];
+
+  const pastProjects = [
+    {
+      title: t("Karawang Wrack", "Karawang Wreck"),
+      location: t("Indonesien", "Indonesia"),
+      description: t(
+        "Erforschung eines historischen Wracks vor der Küste von Karawang, Indonesien.",
+        "Exploration of a historic wreck off the coast of Karawang, Indonesia."
+      ),
+      image: karawangImg,
+    },
+    {
+      title: t("Freibeuter Forbes", "Privateer Forbes"),
+      location: t("Indonesien", "Indonesia"),
+      description: t(
+        "Auf den Spuren des berüchtigten Freibeuters Forbes in den Gewässern Indonesiens.",
+        "Following the trail of the infamous privateer Forbes in Indonesian waters."
+      ),
+      image: forbesImg,
+    },
+    {
+      title: "Bellevue",
+      location: t("Thunersee", "Lake Thun"),
+      description: t(
+        "Dokumentation des Wracks der Bellevue im Thunersee.",
+        "Documentation of the Bellevue wreck in Lake Thun."
+      ),
+      image: bellevueImg,
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden relative">
+      {/* Global underwater canvas */}
+      <UnderwaterCanvas />
+
+      {/* Depth meter */}
+      <DepthMeter />
+
       {/* Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "glass shadow-lg shadow-ocean/5"
-            : "bg-transparent"
+            ? "glass shadow-2xl shadow-ocean/10 py-2"
+            : "bg-transparent py-4"
         }`}
       >
         <div className="container-wide">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <img src={logo} alt="Nautic Discovery" className="w-12 h-12" />
+              <img
+                src={logo}
+                alt="Nautic Discovery"
+                className={`transition-all duration-500 ${scrolled ? "w-10 h-10" : "w-12 h-12"}`}
+              />
               <span className="text-xl font-serif font-semibold text-foreground tracking-tight">
                 Nautic Discovery
               </span>
@@ -77,7 +172,7 @@ const Index = () => {
               ))}
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm font-medium text-ocean hover:text-ocean-glow transition-colors px-3 py-1.5 rounded-full border border-ocean/20 hover:border-ocean/40"
+                className="flex items-center gap-1.5 text-sm font-medium text-ocean hover:text-ocean-glow transition-colors px-3 py-1.5 rounded-full border border-ocean/20 hover:border-ocean/40 hover:shadow-lg hover:shadow-ocean/10"
               >
                 <Globe className="w-3.5 h-3.5" />
                 {lang === "de" ? "EN" : "DE"}
@@ -87,78 +182,84 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Hero Section — Full immersive */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Parallax background */}
+      {/* ═══════════════════════════════════════ */}
+      {/* HERO — Full-screen cinematic */}
+      {/* ═══════════════════════════════════════ */}
+      <section ref={heroRef} className="relative h-[120vh] flex items-center overflow-hidden">
+        {/* Parallax background with heavy zoom */}
         <div
-          className="absolute inset-0 bg-cover bg-center will-change-transform scale-110"
+          className="absolute inset-0 bg-cover bg-center will-change-transform scale-125"
           style={{
             backgroundImage: `url(${heroImage})`,
-            transform: `translateY(${scrollY * 0.35}px) scale(1.1)`,
+            transform: `translateY(${scrollY * 0.5}px) scale(1.25)`,
           }}
         />
-        {/* Deep ocean gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
+        {/* Multi-layer gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-background/80" />
+        <div className="absolute inset-0 vignette" />
 
-        {/* Atmospheric effects */}
+        {/* Atmospheric layers */}
         <LightRays />
-        <BubbleField count={25} />
+        <BubbleField count={30} />
 
-        {/* Sonar ping effect */}
-        <div className="absolute bottom-32 right-20 hidden lg:block">
-          <div className="relative w-4 h-4">
-            <div className="absolute inset-0 rounded-full bg-ocean/40 animate-sonar-ping" />
-            <div className="absolute inset-0 rounded-full bg-ocean/40 animate-sonar-ping" style={{ animationDelay: "1s" }} />
-            <div className="absolute inset-0 rounded-full bg-ocean/60 w-2 h-2 m-auto" />
-          </div>
+        {/* Sonar display — bottom right */}
+        <div className="absolute bottom-40 right-16 hidden xl:block opacity-60">
+          <SonarSweep />
         </div>
 
-        <div className="relative z-10 container-wide pt-20">
-          <div className="max-w-5xl animate-fade-in">
-            {/* Depth indicator */}
-            <div className="flex items-center gap-3 mb-8 opacity-60">
-              <Anchor className="w-4 h-4 text-ocean" />
-              <div className="h-px w-16 bg-gradient-to-r from-ocean to-transparent" />
-              <span className="text-xs font-mono text-ocean tracking-[0.3em] uppercase">
-                {t("Tiefenforschung", "Deep Exploration")}
+        {/* Content */}
+        <div className="relative z-10 container-wide">
+          <div className="max-w-6xl">
+            {/* Tag line */}
+            <div className="flex items-center gap-4 mb-10 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <div className="w-12 h-px bg-ocean" />
+              <span className="text-xs font-mono text-ocean tracking-[0.5em] uppercase">
+                {t("Tiefenforschung seit 2008", "Deep Exploration since 2008")}
               </span>
             </div>
 
-            <h1 className="heading-display text-foreground mb-6 font-serif text-glow">
-              {t("Faszination", "Fascination of")}
-              <br />
-              <span className="gradient-text">{t("Wracksuche", "Wreck Hunting")}</span>
+            {/* Massive typography */}
+            <h1 className="heading-display font-serif mb-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
+              <span className="block text-foreground text-glow-strong">
+                {t("Faszination", "Fascination")}
+              </span>
+              <span className="block gradient-text mt-[-0.05em]">
+                {t("Wracksuche", "Wreck Hunting")}
+              </span>
             </h1>
-            <div className="space-y-3 mb-10">
-              <p className="text-2xl md:text-3xl text-foreground/80 font-light">
+
+            {/* Subtitle with breathing space */}
+            <div className="max-w-2xl space-y-4 mb-14 animate-fade-in" style={{ animationDelay: "0.8s" }}>
+              <p className="text-xl md:text-2xl text-foreground/60 font-light leading-relaxed">
                 {t(
                   "Geschichte · Technik · Teamwork · Abenteuer",
                   "History · Technology · Teamwork · Adventure"
                 )}
               </p>
-              <p className="text-lg md:text-xl text-foreground/50 font-light max-w-2xl">
+              <p className="text-base text-foreground/30 font-light">
                 {t(
-                  "Entdeckung der versunkenen Schätze — Discovering the Treasures of the Deep",
+                  "Entdeckung der versunkenen Schätze der Tiefe",
                   "Discovering the Treasures of the Deep"
                 )}
               </p>
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* CTA */}
+            <div className="flex items-center gap-5 animate-fade-in" style={{ animationDelay: "1.1s" }}>
               <Button
                 onClick={() => scrollToSection("mission")}
                 size="lg"
-                className="bg-ocean hover:bg-ocean-glow text-background px-8 h-14 font-medium shadow-lg shadow-ocean/20 hover:shadow-ocean/40 hover:shadow-xl transition-all duration-300 animate-pulse-glow"
+                className="bg-ocean hover:bg-ocean-glow text-background px-10 h-16 text-lg font-medium shadow-2xl shadow-ocean/30 hover:shadow-ocean/50 hover:scale-105 transition-all duration-500"
               >
-                {t("Unsere Mission entdecken", "Discover Our Mission")}
+                {t("Mission entdecken", "Discover Mission")}
                 <ChevronRight className="ml-2 w-5 h-5" />
               </Button>
               <Button
                 onClick={() => scrollToSection("projects")}
                 variant="outline"
                 size="lg"
-                className="border-ocean/30 text-ocean hover:bg-ocean/10 hover:border-ocean/50 h-14 px-8 transition-all duration-300"
+                className="border-ocean/30 text-ocean hover:bg-ocean/10 hover:border-ocean/50 h-16 px-10 text-lg transition-all duration-500 hover:shadow-lg hover:shadow-ocean/10"
               >
                 {t("Expeditionen", "Expeditions")}
                 <Compass className="ml-2 w-5 h-5" />
@@ -167,90 +268,95 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-float">
-          <span className="text-xs text-foreground/30 tracking-widest uppercase">{t("Scrollen", "Scroll")}</span>
-          <div className="w-6 h-10 rounded-full border-2 border-foreground/20 flex items-start justify-center p-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-ocean animate-bounce" />
-          </div>
+        {/* Scroll cue */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-float z-10">
+          <span className="text-[10px] text-foreground/20 tracking-[0.4em] uppercase font-mono">
+            {t("Abtauchen", "Dive In")}
+          </span>
+          <ChevronDown className="w-5 h-5 text-ocean/40 animate-bounce" />
         </div>
       </section>
 
-      {/* Wave divider */}
-      <WaveDivider color="hsl(215, 80%, 6%)" />
+      {/* ═══════════════════════════════════════ */}
+      {/* MISSION — Cinematic quote */}
+      {/* ═══════════════════════════════════════ */}
+      <div className="section-divider" />
 
-      {/* Mission Quote */}
-      <section id="mission" className="section-padding section-abyss relative">
-        <BubbleField count={8} />
+      <section id="mission" className="section-padding relative" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
+        <BubbleField count={6} />
         <LightRays />
-        <div className="container-narrow text-center relative z-10">
+        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
           <ScrollReveal>
-            <div className="relative inline-block">
-              <img src={logo} alt="Nautic Discovery" className="w-16 h-16 mx-auto mb-8" />
-              <div className="absolute inset-0 w-20 h-20 -m-2 rounded-full border border-ocean/20 animate-sonar-ping mx-auto" />
-            </div>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <blockquote className="text-3xl md:text-5xl font-serif text-foreground mb-6 leading-relaxed text-glow">
-              «It needs a lot of silver
-              <br />
-              to find the <span className="gradient-text">gold</span>»
-            </blockquote>
+            <img src={logo} alt="Nautic Discovery" className="w-20 h-20 mx-auto mb-12 opacity-60" />
           </ScrollReveal>
           <ScrollReveal delay={200}>
-            <p className="text-lg text-muted-foreground mb-6">
-              — Mac Mace, {t("Wracksucher Scilly Islands", "Wreck Hunter, Scilly Islands")}
+            <blockquote className="text-4xl md:text-7xl font-serif text-foreground mb-8 leading-[1.1] text-glow-strong">
+              «It needs a lot of
+              <br />
+              <span className="text-outline">silver</span> to find
+              <br />
+              the <span className="gradient-text">gold</span>»
+            </blockquote>
+          </ScrollReveal>
+          <ScrollReveal delay={400}>
+            <p className="text-lg text-muted-foreground mb-8">
+              — Mac Mace, {t("Wracksucher, Scilly Islands", "Wreck Hunter, Scilly Islands")}
             </p>
-            <div className="ocean-line max-w-24 mx-auto mb-8" />
-            <p className="text-base text-foreground/50 max-w-2xl mx-auto leading-relaxed">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-ocean to-transparent mx-auto mb-10" />
+            <p className="text-base md:text-lg text-foreground/40 max-w-2xl mx-auto leading-relaxed">
               {t(
-                "Jede grosse Entdeckung verlangt Geduld, Investition und den unerschütterlichen Glauben an das, was unter der Oberfläche verborgen liegt. Unsere Expeditionen werden angetrieben von der Überzeugung, dass die grössten Geschichten der Menschheit noch darauf warten, erzählt zu werden.",
-                "Every great discovery demands patience, investment, and an unwavering belief in what lies hidden beneath the surface. Our expeditions are driven by the conviction that humanity's greatest stories are still waiting to be told."
+                "Jede grosse Entdeckung verlangt Geduld, Investition und den unerschütterlichen Glauben an das, was unter der Oberfläche verborgen liegt.",
+                "Every great discovery demands patience, investment, and an unwavering belief in what lies hidden beneath the surface."
               )}
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      <WaveDivider color="hsl(210, 100%, 4%)" flip />
+      <div className="section-divider" />
 
-      {/* About Section */}
-      <section id="about" className="section-padding section-deep relative">
+      {/* ═══════════════════════════════════════ */}
+      {/* ABOUT — Split dramatic */}
+      {/* ═══════════════════════════════════════ */}
+      <section id="about" className="section-padding relative section-deep">
         <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
+          {/* Section header */}
+          <div className="mb-20">
             <ScrollReveal>
-              <span className="floating-badge mb-4">{t("Unterwasser-Erforschung", "Underwater Exploration")}</span>
+              <span className="floating-badge mb-6">{t("Unterwasser-Erforschung", "Underwater Exploration")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-foreground mb-4">
+              <h2 className="heading-xl font-serif text-foreground">
                 {t("Über ", "About ")}
                 <span className="gradient-text">Nautic Discovery</span>
               </h2>
-              <div className="ocean-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <ScrollReveal direction="left">
-              <div className="space-y-6 text-body-lg text-foreground/70">
-                <p className="leading-relaxed">
+          <div className="grid lg:grid-cols-5 gap-16 items-center">
+            {/* Text — 3 cols */}
+            <ScrollReveal direction="left" className="lg:col-span-3">
+              <div className="space-y-8">
+                <p className="text-xl md:text-2xl text-foreground/70 leading-relaxed font-light">
                   {t(
                     "Nautic Discovery hat sich der Suche nach bisher unentdeckten Schiffwracks im In- und Ausland verschrieben. Die Suche ist dabei immer mit spannender Technik und oft auch mit Abenteuer verbunden.",
                     "Nautic Discovery is dedicated to the search for previously undiscovered shipwrecks both domestically and abroad. The search is always linked to exciting technology and often to adventure."
                   )}
                 </p>
 
-                <p className="leading-relaxed">
+                <p className="text-lg text-foreground/50 leading-relaxed">
                   {t(
                     "Die Faszination, Wracks als Zeitkapsel der Geschichte zu entdecken und zu dokumentieren ist unsere Hauptmotivation. Bei spezifischen Projekten im Meer schwingt jedoch auch der Traum nach dem grossen Schatzfund mit.",
                     "The fascination of discovering and documenting wrecks as time capsules of history is our main motivation. For specific ocean projects, the dream of a great treasure find also resonates."
                   )}
                 </p>
 
-                <div className="glass rounded-lg p-6">
-                  <div className="flex items-start space-x-4">
-                    <Waves className="w-6 h-6 text-ocean mt-1 flex-shrink-0" />
-                    <p className="text-sm text-foreground/60">
+                <div className="glass rounded-xl p-8 mt-8">
+                  <div className="flex items-start space-x-5">
+                    <div className="w-12 h-12 rounded-full bg-ocean/10 flex items-center justify-center flex-shrink-0">
+                      <Waves className="w-6 h-6 text-ocean" />
+                    </div>
+                    <p className="text-foreground/50 leading-relaxed">
                       {t(
                         "Wir kombinieren modernste Sonar-Kartierung, ROV-Technologie und Taucherfahrung mit akribischer historischer Forschung — von antiken Handelsschiffen im Mittelmeer bis zu Kriegsschiffen im Atlantik.",
                         "We combine cutting-edge sonar mapping, ROV technology, and diving expertise with meticulous historical research — from ancient merchant ships in the Mediterranean to warships in the Atlantic."
@@ -261,19 +367,22 @@ const Index = () => {
               </div>
             </ScrollReveal>
 
-            <ScrollReveal direction="right">
+            {/* Image — 2 cols */}
+            <ScrollReveal direction="right" className="lg:col-span-2">
               <div className="relative">
                 <ImageReveal
                   src={shipwreckImage}
                   alt={t("Unterwasser-Wrack-Scan", "Underwater Wreck Scan")}
-                  className="h-[450px]"
+                  className="h-[500px] rounded-xl"
                   imgClassName="w-full h-full object-cover"
                 />
-                {/* Decorative depth marker */}
-                <div className="absolute -left-4 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-2">
-                  <div className="w-px h-20 bg-gradient-to-b from-transparent to-ocean/40" />
-                  <span className="text-[10px] font-mono text-ocean/60 -rotate-90 whitespace-nowrap">DEPTH: 47m</span>
-                  <div className="w-px h-20 bg-gradient-to-b from-ocean/40 to-transparent" />
+                {/* Floating depth marker */}
+                <div className="absolute -left-6 top-1/3 hidden lg:flex flex-col items-center gap-3">
+                  <div className="w-px h-24 bg-gradient-to-b from-transparent via-ocean/40 to-transparent" />
+                  <div className="glass-light rounded-full px-3 py-2">
+                    <span className="text-[10px] font-mono text-ocean tracking-widest">47m</span>
+                  </div>
+                  <div className="w-px h-24 bg-gradient-to-b from-transparent via-ocean/40 to-transparent" />
                 </div>
               </div>
             </ScrollReveal>
@@ -281,173 +390,140 @@ const Index = () => {
         </div>
       </section>
 
-      <WaveDivider color="hsl(215, 80%, 6%)" />
+      <WaveDivider color="hsl(215, 80%, 5%)" />
 
-      {/* Projects Section */}
-      <section id="projects" className="section-padding section-abyss relative">
-        <BubbleField count={10} />
+      {/* ═══════════════════════════════════════ */}
+      {/* PROJECTS — Full immersion */}
+      {/* ═══════════════════════════════════════ */}
+      <section id="projects" className="section-padding relative" style={{ background: "linear-gradient(180deg, hsl(215, 80%, 5%) 0%, hsl(220, 100%, 3%) 40%, hsl(215, 80%, 5%) 100%)" }}>
+        <BubbleField count={12} />
         <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
+          {/* Header */}
+          <div className="mb-20">
             <ScrollReveal>
-              <span className="floating-badge mb-4">{t("Entdeckungen", "Discoveries")}</span>
+              <span className="floating-badge mb-6">{t("Entdeckungen", "Discoveries")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-foreground mb-4">
+              <h2 className="heading-xl font-serif text-foreground">
                 {t("Expeditionen & ", "Expeditions & ")}
                 <span className="gradient-text">{t("Projekte", "Projects")}</span>
               </h2>
-              <div className="ocean-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
 
-          {/* Ongoing Projects */}
+          {/* Ongoing */}
           <ScrollReveal>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <div className="flex items-center gap-4 mb-12">
+              <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50" />
               <h3 className="heading-md font-serif text-foreground">{t("Laufende Projekte", "Ongoing Projects")}</h3>
+              <div className="flex-1 h-px bg-gradient-to-r from-ocean/20 to-transparent" />
             </div>
           </ScrollReveal>
 
-          <div className="relative mb-20">
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-ocean/15 to-transparent -translate-y-1/2" />
+          {/* Featured project — full width */}
+          <ScrollReveal className="mb-12">
+            <div className="card-modern group cursor-pointer">
+              <div className="grid md:grid-cols-2">
+                <div className="relative h-72 md:h-auto overflow-hidden">
+                  <img
+                    src={ongoingProjects[0].image}
+                    alt={ongoingProjects[0].title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card md:block hidden" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent md:hidden" />
+                  <span className="absolute top-4 left-4 text-xs font-medium px-4 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-md">
+                    {ongoingProjects[0].status}
+                  </span>
+                </div>
+                <div className="p-10 md:p-14 flex flex-col justify-center">
+                  <div className="flex items-center gap-2 text-ocean font-mono text-xs mb-4 tracking-widest">
+                    <Anchor className="w-3 h-3" />
+                    DEPTH: {ongoingProjects[0].depth}
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-serif font-semibold text-foreground mb-3 group-hover:text-ocean transition-colors duration-500">
+                    {ongoingProjects[0].title}
+                  </h3>
+                  <div className="flex items-center text-sm text-muted-foreground mb-5">
+                    <MapPin className="w-4 h-4 mr-2 text-ocean" />
+                    {ongoingProjects[0].location}
+                  </div>
+                  <p className="text-foreground/50 leading-relaxed mb-6">{ongoingProjects[0].description}</p>
+                  <div className="pt-4 border-t border-border/30">
+                    <span className="text-sm font-medium text-ocean">{ongoingProjects[0].highlight}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Mercedes",
-                  location: "Lago Maggiore",
-                  status: t("Aktiv", "Active"),
-                  description: t(
-                    "Suche und Dokumentation des versunkenen Dampfschiffs Mercedes im Lago Maggiore — ein faszinierendes Stück Schweizer Schifffahrtsgeschichte.",
-                    "Search and documentation of the sunken steamship Mercedes in Lago Maggiore — a fascinating piece of Swiss maritime history."
-                  ),
-                  highlight: t("Aktuelle Tauchgänge", "Current Dives"),
-                  image: mercedesImg,
-                  depth: "210m",
-                },
-                {
-                  title: "Torpediniera T19",
-                  location: "Lago Maggiore",
-                  status: t("Aktiv", "Active"),
-                  description: t(
-                    "Erforschung des italienischen Torpedoboots T19, das im Zweiten Weltkrieg auf dem Grund des Lago Maggiore versank.",
-                    "Exploration of the Italian torpedo boat T19, which sank to the bottom of Lago Maggiore during World War II."
-                  ),
-                  highlight: t("Historische Dokumentation", "Historical Documentation"),
-                  image: t19Img,
-                  depth: "180m",
-                },
-                {
-                  title: t("Handelsschiff 17. Jhd.", "17th Century Merchant Ship"),
-                  location: t("Ärmelkanal", "English Channel"),
-                  status: t("Aktiv", "Active"),
-                  description: t(
-                    "Suche nach einem Handelsschiff aus dem 17. Jahrhundert im Ärmelkanal — der Traum vom grossen Schatzfund.",
-                    "Search for a 17th-century merchant ship in the English Channel — the dream of a great treasure discovery."
-                  ),
-                  highlight: t("Schatzsuche", "Treasure Hunt"),
-                  image: merchantImg,
-                  depth: "65m",
-                },
-              ].map((project, index) => (
-                <ScrollReveal key={index} delay={index * 150}>
-                  <div className="card-modern group cursor-pointer relative overflow-hidden rounded-lg">
-                    <div className="relative h-52 overflow-hidden">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
-                      <span className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-sm">
-                        {project.status}
-                      </span>
-                      <span className="absolute top-3 right-3 text-[10px] font-mono px-2 py-1 rounded glass-light text-ocean">
-                        ↓ {project.depth}
-                      </span>
+          {/* Other ongoing */}
+          <div className="grid md:grid-cols-2 gap-8 mb-24">
+            {ongoingProjects.slice(1).map((project, index) => (
+              <ScrollReveal key={index} delay={index * 200}>
+                <div className="card-modern group cursor-pointer h-full">
+                  <div className="relative h-56 overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                    <span className="absolute top-4 left-4 text-xs font-medium px-4 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-md">
+                      {project.status}
+                    </span>
+                    <span className="absolute top-4 right-4 text-[10px] font-mono px-3 py-1.5 rounded-full glass-light text-ocean tracking-widest">
+                      ↓ {project.depth}
+                    </span>
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-serif font-semibold text-foreground mb-2 group-hover:text-ocean transition-colors duration-500">
+                      {project.title}
+                    </h3>
+                    <div className="flex items-center text-sm text-muted-foreground mb-4">
+                      <MapPin className="w-4 h-4 mr-2 text-ocean" />
+                      {project.location}
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-serif font-semibold text-foreground mb-2 group-hover:text-ocean transition-colors">
-                        {project.title}
-                      </h3>
-                      <div className="flex items-center text-sm text-muted-foreground mb-3">
-                        <MapPin className="w-4 h-4 mr-2 text-ocean" />
-                        {project.location}
-                      </div>
-                      <p className="text-foreground/50 leading-relaxed text-sm mb-3">{project.description}</p>
-                      <div className="pt-3 border-t border-border/50">
-                        <span className="text-xs font-medium text-ocean">{project.highlight}</span>
-                      </div>
+                    <p className="text-foreground/45 leading-relaxed text-sm mb-4">{project.description}</p>
+                    <div className="pt-4 border-t border-border/30">
+                      <span className="text-xs font-medium text-ocean">{project.highlight}</span>
                     </div>
                   </div>
-                </ScrollReveal>
-              ))}
-            </div>
+                </div>
+              </ScrollReveal>
+            ))}
           </div>
 
           {/* Past Projects */}
           <ScrollReveal>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-2 h-2 rounded-full bg-muted-foreground/50" />
+            <div className="flex items-center gap-4 mb-12">
+              <div className="w-3 h-3 rounded-full bg-muted-foreground/40" />
               <h3 className="heading-md font-serif text-foreground">{t("Verschiedene Projekte", "Various Projects")}</h3>
+              <div className="flex-1 h-px bg-gradient-to-r from-border/30 to-transparent" />
             </div>
           </ScrollReveal>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: t("Karawang Wrack", "Karawang Wreck"),
-                location: t("Indonesien", "Indonesia"),
-                status: t("Abgeschlossen", "Completed"),
-                description: t(
-                  "Erforschung eines historischen Wracks vor der Küste von Karawang, Indonesien — ein Zeugnis des Seehandels in Südostasien.",
-                  "Exploration of a historic wreck off the coast of Karawang, Indonesia — a testament to maritime trade in Southeast Asia."
-                ),
-                image: karawangImg,
-              },
-              {
-                title: t("Freibeuter Forbes", "Privateer Forbes"),
-                location: t("Indonesien", "Indonesia"),
-                status: t("Abgeschlossen", "Completed"),
-                description: t(
-                  "Auf den Spuren des berüchtigten Freibeuters Forbes in den Gewässern Indonesiens — Abenteuer und Geschichte vereint.",
-                  "Following the trail of the infamous privateer Forbes in Indonesian waters — adventure and history combined."
-                ),
-                image: forbesImg,
-              },
-              {
-                title: "Bellevue",
-                location: t("Thunersee", "Lake Thun"),
-                status: t("Abgeschlossen", "Completed"),
-                description: t(
-                  "Dokumentation des Wracks der Bellevue im Thunersee — ein Stück lokaler Schweizer Schifffahrtsgeschichte.",
-                  "Documentation of the Bellevue wreck in Lake Thun — a piece of local Swiss maritime history."
-                ),
-                image: bellevueImg,
-              },
-            ].map((project, index) => (
+            {pastProjects.map((project, index) => (
               <ScrollReveal key={index} delay={index * 150}>
-                <div className="card-modern group cursor-pointer relative overflow-hidden rounded-lg">
-                  <div className="relative h-52 overflow-hidden">
+                <div className="card-modern group cursor-pointer h-full">
+                  <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 saturate-[0.7] group-hover:saturate-100"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
-                    <span className="absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full glass-light text-muted-foreground">
-                      {project.status}
-                    </span>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-serif font-semibold text-foreground mb-2 group-hover:text-ocean transition-colors">
+                    <h3 className="text-xl font-serif font-semibold text-foreground mb-2 group-hover:text-ocean transition-colors duration-500">
                       {project.title}
                     </h3>
                     <div className="flex items-center text-sm text-muted-foreground mb-3">
                       <MapPin className="w-4 h-4 mr-2 text-ocean" />
                       {project.location}
                     </div>
-                    <p className="text-foreground/50 leading-relaxed text-sm">{project.description}</p>
+                    <p className="text-foreground/40 leading-relaxed text-sm">{project.description}</p>
                   </div>
                 </div>
               </ScrollReveal>
@@ -456,85 +532,98 @@ const Index = () => {
         </div>
       </section>
 
-      <WaveDivider color="hsl(210, 100%, 4%)" flip />
+      <div className="section-divider" />
 
-      {/* Team Section */}
-      <section id="team" className="section-padding section-deep relative">
+      {/* ═══════════════════════════════════════ */}
+      {/* TEAM — Dramatic portraits */}
+      {/* ═══════════════════════════════════════ */}
+      <section id="team" className="section-padding relative section-deep">
         <LightRays />
         <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
+          <div className="mb-20">
             <ScrollReveal>
-              <span className="floating-badge mb-4">{t("Gründer", "Founders")}</span>
+              <span className="floating-badge mb-6">{t("Gründer", "Founders")}</span>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="heading-xl font-serif text-foreground mb-4">
+              <h2 className="heading-xl font-serif text-foreground">
                 {t("Das ", "The ")}
                 <span className="gradient-text">Team</span>
               </h2>
-              <div className="ocean-line max-w-24 mx-auto" />
             </ScrollReveal>
           </div>
 
           <ScrollReveal>
-            <p className="text-body-lg text-foreground/50 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
+            <p className="text-xl text-foreground/45 max-w-3xl mb-16 leading-relaxed">
               {t(
-                "Nautic Discovery wurde von Jörg Mathieu und Martin Wenzel gegründet. Sie haben sich 2008 bei einer Wrackbergung über den gemeinsamen Freund Klaus Keppler† kennengelernt und haben seither zusammen zahlreiche Wracks betaucht und neue Wrackprojekte initiiert. Für grössere Projekte wird jeweils ein Team gebildet mit Fachleuten aus den Bereichen Literaturrecherche, Hydrologie/Vermessung, Tauchtechnik und Archäologie.",
-                "Nautic Discovery was founded by Jörg Mathieu and Martin Wenzel. They met in 2008 during a wreck recovery through their mutual friend Klaus Keppler† and have since dived numerous wrecks together and initiated new wreck projects. For larger projects, a team is assembled with specialists in literature research, hydrology/surveying, diving technology, and archaeology."
+                "Nautic Discovery wurde von Jörg Mathieu und Martin Wenzel gegründet. Sie haben sich 2008 bei einer Wrackbergung über den gemeinsamen Freund Klaus Keppler† kennengelernt und haben seither zusammen zahlreiche Wracks betaucht und neue Wrackprojekte initiiert.",
+                "Nautic Discovery was founded by Jörg Mathieu and Martin Wenzel. They met in 2008 during a wreck recovery through their mutual friend Klaus Keppler† and have since dived numerous wrecks together and initiated new wreck projects."
               )}
             </p>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
-            <ScrollReveal delay={0}>
-              <div className="card-modern p-8 group text-center">
-                <div className="relative w-24 h-24 rounded-full overflow-hidden mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <img src={joergImage} alt="Jörg Mathieu" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 rounded-full border-2 border-ocean/30 group-hover:border-ocean transition-colors" />
-                </div>
-                <h3 className="text-2xl font-serif font-semibold text-foreground mb-2">
-                  Jörg Mathieu
-                </h3>
-                <p className="text-ocean font-medium mb-4 text-sm">
-                  {t("Mitgründer & Technik", "Co-Founder & Technology")}
-                </p>
-                <p className="text-foreground/50 leading-relaxed text-sm">
-                  {t(
-                    "Experte für maritime Technik und Tauchtechnologie. Betreut den gesamten technischen Bereich von Nautic Discovery.",
-                    "Expert in maritime technology and diving technology. Oversees all technical operations at Nautic Discovery."
-                  )}
-                </p>
-              </div>
-            </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <p className="text-lg text-foreground/35 max-w-3xl mb-16 leading-relaxed">
+              {t(
+                "Für grössere Projekte wird jeweils ein Team gebildet mit Fachleuten aus den Bereichen Literaturrecherche, Hydrologie/Vermessung, Tauchtechnik und Archäologie.",
+                "For larger projects, a team is assembled with specialists in literature research, hydrology/surveying, diving technology, and archaeology."
+              )}
+            </p>
+          </ScrollReveal>
 
-            <ScrollReveal delay={150}>
-              <div className="card-modern p-8 group text-center">
-                <div className="relative w-24 h-24 rounded-full overflow-hidden mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <img src={martinImage} alt="Martin Wenzel" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 rounded-full border-2 border-ocean/30 group-hover:border-ocean transition-colors" />
+          {/* Team cards — horizontal */}
+          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mb-16">
+            {[
+              {
+                name: "Jörg Mathieu",
+                role: t("Mitgründer & Technik", "Co-Founder & Technology"),
+                image: joergImage,
+                desc: t(
+                  "Experte für maritime Technik und Tauchtechnologie. Betreut den gesamten technischen Bereich von Nautic Discovery.",
+                  "Expert in maritime technology and diving technology. Oversees all technical operations at Nautic Discovery."
+                ),
+              },
+              {
+                name: "Martin Wenzel",
+                role: t("Mitgründer & Finanzierung", "Co-Founder & Finance"),
+                image: martinImage,
+                desc: t(
+                  "Verantwortlich für die Finanzierung der externen Leistungen und strategische Projektplanung.",
+                  "Responsible for financing external services and strategic project planning."
+                ),
+              },
+            ].map((member, i) => (
+              <ScrollReveal key={i} delay={i * 200}>
+                <div className="card-modern p-0 group overflow-hidden">
+                  <div className="flex flex-col sm:flex-row">
+                    <div className="relative w-full sm:w-48 h-48 sm:h-auto overflow-hidden flex-shrink-0">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card hidden sm:block" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent sm:hidden" />
+                    </div>
+                    <div className="p-8 flex flex-col justify-center">
+                      <h3 className="text-2xl font-serif font-semibold text-foreground mb-1">
+                        {member.name}
+                      </h3>
+                      <p className="text-ocean font-medium mb-4 text-sm">{member.role}</p>
+                      <p className="text-foreground/45 leading-relaxed text-sm">{member.desc}</p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-serif font-semibold text-foreground mb-2">
-                  Martin Wenzel
-                </h3>
-                <p className="text-ocean font-medium mb-4 text-sm">
-                  {t("Mitgründer & Finanzierung", "Co-Founder & Finance")}
-                </p>
-                <p className="text-foreground/50 leading-relaxed text-sm">
-                  {t(
-                    "Verantwortlich für die Finanzierung der externen Leistungen und strategische Projektplanung.",
-                    "Responsible for financing external services and strategic project planning."
-                  )}
-                </p>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            ))}
           </div>
 
           <ScrollReveal>
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-3xl">
               <ImageReveal
                 src={teamImage}
                 alt={t("Team im U-Boot", "Team in Submarine")}
-                className="h-[300px] rounded-lg"
-                imgClassName="w-full h-full object-cover rounded-lg"
+                className="h-[350px] rounded-xl"
+                imgClassName="w-full h-full object-cover rounded-xl"
               />
             </div>
           </ScrollReveal>
@@ -543,30 +632,35 @@ const Index = () => {
 
       <WaveDivider color="hsl(220, 100%, 3%)" />
 
-      {/* Contact Section */}
+      {/* ═══════════════════════════════════════ */}
+      {/* CONTACT — Atmospheric */}
+      {/* ═══════════════════════════════════════ */}
       <section id="contact" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(210, 100%, 6%) 50%, hsl(220, 100%, 3%) 100%)" }}>
-        <BubbleField count={15} />
+        <BubbleField count={18} />
         <LightRays />
 
-        {/* Ambient glow orbs */}
+        {/* Ambient glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 rounded-full blur-[100px]" style={{ background: "hsl(195, 100%, 45%, 0.08)" }} />
-          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-[120px]" style={{ background: "hsl(195, 100%, 45%, 0.05)" }} />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px]" style={{ background: "hsl(195, 100%, 45%, 0.06)" }} />
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full blur-[180px]" style={{ background: "hsl(195, 100%, 45%, 0.04)" }} />
         </div>
 
-        <div className="container-narrow text-center relative z-10">
+        <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
           <ScrollReveal>
-            <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-full glass mb-8 animate-float">
-              <Mail className="w-10 h-10 text-ocean" strokeWidth={1.5} />
-              <div className="absolute inset-0 rounded-full animate-pulse-glow" />
+            <div className="relative inline-flex items-center justify-center w-28 h-28 rounded-full glass mb-12">
+              <Mail className="w-12 h-12 text-ocean" strokeWidth={1} />
+              <div className="absolute inset-0 rounded-full border border-ocean/20 animate-[sonar-ping_4s_ease-out_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-ocean/10 animate-[sonar-ping_4s_ease-out_infinite_1s]" />
             </div>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <h2 className="heading-lg font-serif mb-6 text-foreground text-glow">{t("Kontakt", "Contact")}</h2>
-            <p className="text-xl text-foreground/70 mb-4 leading-relaxed max-w-2xl mx-auto">
+            <h2 className="heading-xl font-serif mb-8 text-foreground text-glow">
+              {t("Kontakt", "Contact")}
+            </h2>
+            <p className="text-xl text-foreground/50 mb-3 leading-relaxed">
               {t("Kontaktpersonen: Jörg Mathieu & Martin Wenzel", "Contact: Jörg Mathieu & Martin Wenzel")}
             </p>
-            <p className="text-lg text-ocean mb-10">
+            <p className="text-2xl text-ocean mb-12 font-light">
               info@nauticdiscovery.com
             </p>
           </ScrollReveal>
@@ -574,7 +668,7 @@ const Index = () => {
             <a href="mailto:info@nauticdiscovery.com">
               <Button
                 size="lg"
-                className="bg-ocean hover:bg-ocean-glow text-background px-8 h-14 font-medium shadow-lg shadow-ocean/20 hover:shadow-ocean/40 hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="bg-ocean hover:bg-ocean-glow text-background px-12 h-16 text-lg font-medium shadow-2xl shadow-ocean/30 hover:shadow-ocean/50 hover:scale-105 transition-all duration-500"
               >
                 {t("E-Mail senden", "Send Email")}
                 <ChevronRight className="ml-2 w-5 h-5" />
@@ -584,20 +678,22 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border" style={{ background: "hsl(210, 100%, 4%)" }}>
-        <div className="container-wide py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* ═══════════════════════════════════════ */}
+      {/* FOOTER */}
+      {/* ═══════════════════════════════════════ */}
+      <footer className="relative border-t border-border/30" style={{ background: "linear-gradient(180deg, hsl(210, 100%, 4%), hsl(220, 100%, 2%))" }}>
+        <div className="container-wide py-16">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex items-center space-x-3">
-              <img src={logo} alt="Nautic Discovery" className="w-10 h-10" />
-              <span className="font-serif font-semibold text-foreground">Nautic Discovery</span>
+              <img src={logo} alt="Nautic Discovery" className="w-10 h-10 opacity-70" />
+              <span className="font-serif font-semibold text-foreground/70">Nautic Discovery</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-8 text-sm text-muted-foreground">
               <a
                 href="https://www.wip-dresden.de/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-ocean transition-colors flex items-center gap-1"
+                className="hover:text-ocean transition-colors flex items-center gap-1.5 hover-lift"
               >
                 WIP Martin Wenzel
                 <ExternalLink className="w-3 h-3" />
@@ -606,19 +702,27 @@ const Index = () => {
                 href="https://www.subspirit.ch/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-ocean transition-colors flex items-center gap-1"
+                className="hover:text-ocean transition-colors flex items-center gap-1.5 hover-lift"
               >
                 Sub Spirit
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground/60">
               © {new Date().getFullYear()} Nautic Discovery
             </p>
           </div>
-          <div className="mt-8 pt-6 border-t border-border text-center">
-            <p className="text-xs text-muted-foreground">
-              Website by <a href="https://studio-arm.com/" target="_blank" rel="noopener noreferrer" className="hover:text-ocean transition-colors font-medium">StudioARM</a>
+          <div className="mt-10 pt-8 border-t border-border/20 text-center">
+            <p className="text-xs text-muted-foreground/40">
+              Website by{" "}
+              <a
+                href="https://studio-arm.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-ocean transition-colors font-medium"
+              >
+                StudioARM
+              </a>
             </p>
           </div>
         </div>
