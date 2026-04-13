@@ -12,6 +12,9 @@ import SonarSweep from "@/components/SonarSweep";
 import ParallaxSection from "@/components/ParallaxSection";
 import FloatingDebris from "@/components/FloatingDebris";
 import DepthPressure from "@/components/DepthPressure";
+import JellyfishSwarm from "@/components/JellyfishSwarm";
+import MagneticCursor from "@/components/MagneticCursor";
+import DiveTransition from "@/components/DiveTransition";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -144,9 +147,11 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-x-hidden relative">
       {/* Global atmospheric layers */}
       <UnderwaterCanvas />
+      <JellyfishSwarm />
       <FloatingDebris />
       <DepthPressure />
       <DepthMeter />
+      <MagneticCursor />
 
       {/* Navigation */}
       <nav
@@ -324,7 +329,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <div className="section-divider" />
+      <DiveTransition />
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -375,7 +380,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="section-divider" />
+      <DiveTransition />
 
       {/* ═══════════════════════════════════════ */}
       {/* ABOUT — Split dramatic with opposing parallax */}
@@ -632,7 +637,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="section-divider" />
+      <DiveTransition />
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
