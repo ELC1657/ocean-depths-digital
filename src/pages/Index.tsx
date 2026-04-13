@@ -329,7 +329,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <div className="section-divider" />
+      <DiveTransition />
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
