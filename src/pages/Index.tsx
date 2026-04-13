@@ -380,7 +380,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="section-divider" />
+      <DiveTransition />
 
       {/* ═══════════════════════════════════════ */}
       {/* ABOUT — Split dramatic with opposing parallax */}
@@ -637,7 +637,7 @@ const Index = () => {
         </div>
       </section>
 
-      <div className="section-divider" />
+      <DiveTransition />
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
