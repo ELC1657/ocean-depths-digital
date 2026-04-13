@@ -147,9 +147,11 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-x-hidden relative">
       {/* Global atmospheric layers */}
       <UnderwaterCanvas />
+      <JellyfishSwarm />
       <FloatingDebris />
       <DepthPressure />
       <DepthMeter />
+      <MagneticCursor />
 
       {/* Navigation */}
       <nav
