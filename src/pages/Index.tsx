@@ -156,6 +156,7 @@ const Index = () => {
       <DepthPressure />
       <DepthMeter />
       <MagneticCursor />
+      <HUDOverlay />
 
       {/* Navigation */}
       <nav
