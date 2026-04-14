@@ -601,7 +601,7 @@ const Index = () => {
                         <span className="text-xs font-medium text-ocean">{project.highlight}</span>
                       </div>
                     </div>
-                  </div>
+                  </TiltCard>
                 </ScrollReveal>
               </ParallaxSection>
             ))}
@@ -620,7 +620,7 @@ const Index = () => {
             {pastProjects.map((project, index) => (
               <ParallaxSection key={index} speed={[-0.06, 0.04, -0.08][index]} rotate>
                 <ScrollReveal delay={index * 150}>
-                  <div className="card-modern group cursor-pointer h-full">
+                  <TiltCard className="card-modern group cursor-pointer h-full" intensity={10}>
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={project.image}
@@ -639,7 +639,7 @@ const Index = () => {
                       </div>
                       <p className="text-foreground/40 leading-relaxed text-sm">{project.description}</p>
                     </div>
-                  </div>
+                  </TiltCard>
                 </ScrollReveal>
               </ParallaxSection>
             ))}
