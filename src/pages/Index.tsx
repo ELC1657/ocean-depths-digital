@@ -770,6 +770,11 @@ const Index = () => {
 
       <WaveDivider color="hsl(220, 100%, 3%)" />
 
+      {/* Whale Song ambient waves before contact */}
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(210, 100%, 6%))" }}>
+        <WhaleSongWaves />
+      </div>
+
       {/* ═══════════════════════════════════════ */}
       {/* CONTACT — Atmospheric with depth parallax */}
       {/* ═══════════════════════════════════════ */}
