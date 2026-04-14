@@ -334,7 +334,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <DiveTransition />
+      <AbyssPortal />
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -386,6 +386,11 @@ const Index = () => {
       </section>
 
       <DiveTransition />
+
+      {/* Whale Song ambient waves */}
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(215, 80%, 5%))" }}>
+        <WhaleSongWaves />
+      </div>
 
       {/* ═══════════════════════════════════════ */}
       {/* ABOUT — Split dramatic with opposing parallax */}
