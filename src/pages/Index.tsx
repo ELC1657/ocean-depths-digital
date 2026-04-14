@@ -532,7 +532,7 @@ const Index = () => {
           {/* Featured project — full width with scale parallax */}
           <ParallaxSection speed={-0.05} scale>
             <ScrollReveal className="mb-12">
-              <div className="card-modern group cursor-pointer">
+              <TiltCard className="card-modern group cursor-pointer" intensity={8}>
                 <div className="grid md:grid-cols-2">
                   <div className="relative h-72 md:h-auto overflow-hidden">
                     <img
