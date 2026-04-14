@@ -573,7 +573,7 @@ const Index = () => {
             {ongoingProjects.slice(1).map((project, index) => (
               <ParallaxSection key={index} speed={index === 0 ? -0.08 : 0.08}>
                 <ScrollReveal delay={index * 200}>
-                  <div className="card-modern group cursor-pointer h-full">
+                  <TiltCard className="card-modern group cursor-pointer h-full" intensity={12}>
                     <div className="relative h-56 overflow-hidden">
                       <img
                         src={project.image}
