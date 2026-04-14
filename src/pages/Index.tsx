@@ -15,6 +15,10 @@ import DepthPressure from "@/components/DepthPressure";
 import JellyfishSwarm from "@/components/JellyfishSwarm";
 import MagneticCursor from "@/components/MagneticCursor";
 import DiveTransition from "@/components/DiveTransition";
+import AbyssPortal from "@/components/AbyssPortal";
+import HUDOverlay from "@/components/HUDOverlay";
+import WhaleSongWaves from "@/components/WhaleSongWaves";
+import TiltCard from "@/components/TiltCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -152,6 +156,7 @@ const Index = () => {
       <DepthPressure />
       <DepthMeter />
       <MagneticCursor />
+      <HUDOverlay />
 
       {/* Navigation */}
       <nav
@@ -329,7 +334,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <DiveTransition />
+      <AbyssPortal />
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -381,6 +386,11 @@ const Index = () => {
       </section>
 
       <DiveTransition />
+
+      {/* Whale Song ambient waves */}
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(215, 80%, 5%))" }}>
+        <WhaleSongWaves />
+      </div>
 
       {/* ═══════════════════════════════════════ */}
       {/* ABOUT — Split dramatic with opposing parallax */}
@@ -522,7 +532,7 @@ const Index = () => {
           {/* Featured project — full width with scale parallax */}
           <ParallaxSection speed={-0.05} scale>
             <ScrollReveal className="mb-12">
-              <div className="card-modern group cursor-pointer">
+              <TiltCard className="card-modern group cursor-pointer" intensity={8}>
                 <div className="grid md:grid-cols-2">
                   <div className="relative h-72 md:h-auto overflow-hidden">
                     <img
@@ -554,7 +564,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             </ScrollReveal>
           </ParallaxSection>
 
@@ -563,7 +573,7 @@ const Index = () => {
             {ongoingProjects.slice(1).map((project, index) => (
               <ParallaxSection key={index} speed={index === 0 ? -0.08 : 0.08}>
                 <ScrollReveal delay={index * 200}>
-                  <div className="card-modern group cursor-pointer h-full">
+                  <TiltCard className="card-modern group cursor-pointer h-full" intensity={12}>
                     <div className="relative h-56 overflow-hidden">
                       <img
                         src={project.image}
@@ -591,7 +601,7 @@ const Index = () => {
                         <span className="text-xs font-medium text-ocean">{project.highlight}</span>
                       </div>
                     </div>
-                  </div>
+                  </TiltCard>
                 </ScrollReveal>
               </ParallaxSection>
             ))}
@@ -610,7 +620,7 @@ const Index = () => {
             {pastProjects.map((project, index) => (
               <ParallaxSection key={index} speed={[-0.06, 0.04, -0.08][index]} rotate>
                 <ScrollReveal delay={index * 150}>
-                  <div className="card-modern group cursor-pointer h-full">
+                  <TiltCard className="card-modern group cursor-pointer h-full" intensity={10}>
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={project.image}
@@ -629,7 +639,7 @@ const Index = () => {
                       </div>
                       <p className="text-foreground/40 leading-relaxed text-sm">{project.description}</p>
                     </div>
-                  </div>
+                  </TiltCard>
                 </ScrollReveal>
               </ParallaxSection>
             ))}
@@ -637,7 +647,7 @@ const Index = () => {
         </div>
       </section>
 
-      <DiveTransition />
+      <AbyssPortal />
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
@@ -759,6 +769,11 @@ const Index = () => {
       </section>
 
       <WaveDivider color="hsl(220, 100%, 3%)" />
+
+      {/* Whale Song ambient waves before contact */}
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(210, 100%, 6%))" }}>
+        <WhaleSongWaves />
+      </div>
 
       {/* ═══════════════════════════════════════ */}
       {/* CONTACT — Atmospheric with depth parallax */}
