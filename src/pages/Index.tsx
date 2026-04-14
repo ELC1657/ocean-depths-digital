@@ -647,7 +647,7 @@ const Index = () => {
         </div>
       </section>
 
-      <DiveTransition />
+      <AbyssPortal />
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
