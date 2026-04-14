@@ -564,7 +564,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </TiltCard>
             </ScrollReveal>
           </ParallaxSection>
 
