@@ -66,6 +66,11 @@ const Index = () => {
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMobileMenuOpen(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const navItems = [
@@ -199,9 +204,42 @@ const Index = () => {
                 {lang === "de" ? "EN" : "DE"}
               </button>
             </div>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-foreground/70 hover:text-ocean transition-colors p-2"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[49] md:hidden">
+          <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" onClick={() => setMobileMenuOpen(false)} />
+          <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-2xl font-serif text-foreground/70 hover:text-ocean transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              onClick={() => { toggleLang(); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2 text-lg font-medium text-ocean hover:text-ocean-glow transition-colors px-5 py-2 rounded-full border border-ocean/20"
+            >
+              <Globe className="w-4 h-4" />
+              {lang === "de" ? "EN" : "DE"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ═══════════════════════════════════════ */}
       {/* HERO — Full-screen cinematic with multi-layer parallax */}
