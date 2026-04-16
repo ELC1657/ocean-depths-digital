@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
