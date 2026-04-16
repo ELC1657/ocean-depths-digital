@@ -36,6 +36,8 @@ import bellevueImg from "@/assets/bellevue-project.jpg";
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const { lang, toggleLang, t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
 
@@ -43,6 +45,7 @@ const Index = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       setScrollY(window.scrollY);
+      setShowScrollTop(window.scrollY > 800);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
