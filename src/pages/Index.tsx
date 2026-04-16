@@ -915,6 +915,17 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Scroll to top */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="w-5 h-5" />
+      </button>
     </div>
   );
 };
