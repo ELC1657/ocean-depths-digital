@@ -7,22 +7,25 @@ const HUDOverlay = () => {
   const frameRef = useRef<number>(0);
 
   useEffect(() => {
-    let t = 0;
+    let frameCount = 0;
     const animate = () => {
-      t += 0.016;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = window.scrollY / maxScroll;
-      const depth = Math.round(progress * 400);
-      const pressure = (depth * 0.1 + 1).toFixed(1);
-      const temp = (4.2 - progress * 2.1).toFixed(1);
+      frameCount++;
+      // Only update state every 6 frames (~10fps) to avoid excessive re-renders
+      if (frameCount % 6 === 0) {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+        const depth = Math.round(progress * 400);
+        const pressure = (depth * 0.1 + 1).toFixed(1);
+        const temp = (4.2 - progress * 2.1).toFixed(1);
 
-      setData(prev => ({
-        ...prev,
-        depth,
-        pressure: parseFloat(pressure),
-        temp: parseFloat(temp),
-      }));
-      setScanLine(prev => (prev + 1) % 100);
+        setData(prev => ({
+          ...prev,
+          depth,
+          pressure: parseFloat(pressure),
+          temp: parseFloat(temp),
+        }));
+        setScanLine(prev => (prev + 1) % 100);
+      }
       frameRef.current = requestAnimationFrame(animate);
     };
     animate();

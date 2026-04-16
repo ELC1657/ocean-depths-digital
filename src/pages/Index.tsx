@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
@@ -36,6 +36,8 @@ import bellevueImg from "@/assets/bellevue-project.jpg";
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const { lang, toggleLang, t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
 
@@ -43,6 +45,7 @@ const Index = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
       setScrollY(window.scrollY);
+      setShowScrollTop(window.scrollY > 800);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -63,6 +66,11 @@ const Index = () => {
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMobileMenuOpen(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const navItems = [
@@ -196,9 +204,42 @@ const Index = () => {
                 {lang === "de" ? "EN" : "DE"}
               </button>
             </div>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-foreground/70 hover:text-ocean transition-colors p-2"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[49] md:hidden">
+          <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" onClick={() => setMobileMenuOpen(false)} />
+          <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-2xl font-serif text-foreground/70 hover:text-ocean transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              onClick={() => { toggleLang(); setMobileMenuOpen(false); }}
+              className="flex items-center gap-2 text-lg font-medium text-ocean hover:text-ocean-glow transition-colors px-5 py-2 rounded-full border border-ocean/20"
+            >
+              <Globe className="w-4 h-4" />
+              {lang === "de" ? "EN" : "DE"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ═══════════════════════════════════════ */}
       {/* HERO — Full-screen cinematic with multi-layer parallax */}
@@ -874,6 +915,17 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Scroll to top */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ArrowUp className="w-5 h-5" />
+      </button>
     </div>
   );
 };
