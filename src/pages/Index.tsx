@@ -21,6 +21,9 @@ import AbyssPortal from "@/components/AbyssPortal";
 import HUDOverlay from "@/components/HUDOverlay";
 import WhaleSongWaves from "@/components/WhaleSongWaves";
 import TiltCard from "@/components/TiltCard";
+import CreatureTrail from "@/components/CreatureTrail";
+import KrakenAwakens from "@/components/KrakenAwakens";
+import DepthZoneIndicator from "@/components/DepthZoneIndicator";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -208,6 +211,9 @@ const Index = () => {
       <MagneticCursor />
       <HUDOverlay />
       <SideNavigator items={navItems} />
+      <CreatureTrail />
+      <DepthZoneIndicator />
+      <KrakenAwakens />
 
       {/* Navigation */}
       <nav
