@@ -211,6 +211,9 @@ const Index = () => {
       <MagneticCursor />
       <HUDOverlay />
       <SideNavigator items={navItems} />
+      <CreatureTrail />
+      <DepthZoneIndicator />
+      <KrakenAwakens />
 
       {/* Navigation */}
       <nav
