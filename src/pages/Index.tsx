@@ -38,18 +38,57 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string>("");
   const { lang, toggleLang, t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      setScrollY(window.scrollY);
-      setShowScrollTop(window.scrollY > 800);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      setScrollY(y);
+      setShowScrollTop(y > 800);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(1, y / max) : 0);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Track active section for nav highlighting
+  useEffect(() => {
+    const ids = ["mission", "about", "projects", "team", "contact"];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Lock body scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
+
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [mobileMenuOpen]);
 
   // Card mouse tracking for spotlight effect
   useEffect(() => {
@@ -176,29 +215,37 @@ const Index = () => {
       >
         <div className="container-wide">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            <button
+              onClick={scrollToTop}
+              className="flex items-center space-x-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50 rounded-md"
+              aria-label="Back to top"
+            >
               <img
                 src={logo}
                 alt="Nautic Discovery"
-                className={`transition-all duration-500 ${scrolled ? "w-10 h-10" : "w-12 h-12"}`}
+                className={`transition-all duration-500 group-hover:scale-110 ${scrolled ? "w-10 h-10" : "w-12 h-12"}`}
               />
-              <span className="text-xl font-serif font-semibold text-foreground tracking-tight">
+              <span className="text-xl font-serif font-semibold text-foreground tracking-tight group-hover:text-ocean transition-colors">
                 Nautic Discovery
               </span>
-            </div>
+            </button>
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="nav-link-underline pb-1"
+                  className={`nav-link-underline pb-1 focus:outline-none focus-visible:text-ocean ${
+                    activeSection === item.id ? "text-ocean" : ""
+                  }`}
+                  aria-current={activeSection === item.id ? "true" : undefined}
                 >
                   {item.label}
                 </button>
               ))}
               <button
                 onClick={toggleLang}
-                className="flex items-center gap-1.5 text-sm font-medium text-ocean hover:text-ocean-glow transition-colors px-3 py-1.5 rounded-full border border-ocean/20 hover:border-ocean/40 hover:shadow-lg hover:shadow-ocean/10"
+                className="flex items-center gap-1.5 text-sm font-medium text-ocean hover:text-ocean-glow transition-all px-3 py-1.5 rounded-full border border-ocean/20 hover:border-ocean/40 hover:shadow-lg hover:shadow-ocean/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50"
+                aria-label={lang === "de" ? "Switch to English" : "Auf Deutsch wechseln"}
               >
                 <Globe className="w-3.5 h-3.5" />
                 {lang === "de" ? "EN" : "DE"}
@@ -207,39 +254,56 @@ const Index = () => {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-foreground/70 hover:text-ocean transition-colors p-2"
-              aria-label="Toggle menu"
+              className="md:hidden text-foreground/70 hover:text-ocean transition-colors p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50 rounded-md"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
+        {/* Scroll progress bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-ocean/5">
+          <div
+            className="h-full bg-gradient-to-r from-ocean via-ocean-glow to-ocean transition-[width] duration-150 ease-out"
+            style={{ width: `${scrollProgress * 100}%` }}
+          />
+        </div>
       </nav>
 
       {/* Mobile menu overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[49] md:hidden">
-          <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" onClick={() => setMobileMenuOpen(false)} />
-          <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className="text-2xl font-serif text-foreground/70 hover:text-ocean transition-colors"
-              >
-                {item.label}
-              </button>
-            ))}
+      <div
+        className={`fixed inset-0 z-[49] md:hidden transition-all duration-500 ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="absolute inset-0 bg-background/95 backdrop-blur-xl" onClick={() => setMobileMenuOpen(false)} />
+        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+          {navItems.map((item, i) => (
             <button
-              onClick={() => { toggleLang(); setMobileMenuOpen(false); }}
-              className="flex items-center gap-2 text-lg font-medium text-ocean hover:text-ocean-glow transition-colors px-5 py-2 rounded-full border border-ocean/20"
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className={`text-2xl font-serif transition-all duration-500 hover:text-ocean ${
+                activeSection === item.id ? "text-ocean" : "text-foreground/70"
+              } ${mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+              style={{ transitionDelay: mobileMenuOpen ? `${i * 60 + 100}ms` : "0ms" }}
             >
-              <Globe className="w-4 h-4" />
-              {lang === "de" ? "EN" : "DE"}
+              {item.label}
             </button>
-          </div>
+          ))}
+          <button
+            onClick={() => { toggleLang(); setMobileMenuOpen(false); }}
+            className={`flex items-center gap-2 text-lg font-medium text-ocean hover:text-ocean-glow transition-all duration-500 px-5 py-2 rounded-full border border-ocean/20 ${
+              mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+            style={{ transitionDelay: mobileMenuOpen ? `${navItems.length * 60 + 100}ms` : "0ms" }}
+          >
+            <Globe className="w-4 h-4" />
+            {lang === "de" ? "EN" : "DE"}
+          </button>
         </div>
-      )}
+      </div>
+
 
       {/* ═══════════════════════════════════════ */}
       {/* HERO — Full-screen cinematic with multi-layer parallax */}
@@ -916,15 +980,30 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* Scroll to top */}
+      {/* Scroll to top with progress ring */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 ${
+        className={`fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50 ${
           showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         aria-label="Scroll to top"
       >
-        <ArrowUp className="w-5 h-5" />
+        <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="25" fill="none" stroke="hsl(var(--ocean) / 0.1)" strokeWidth="2" />
+          <circle
+            cx="28"
+            cy="28"
+            r="25"
+            fill="none"
+            stroke="hsl(var(--ocean))"
+            strokeWidth="2"
+            strokeDasharray={`${2 * Math.PI * 25}`}
+            strokeDashoffset={`${2 * Math.PI * 25 * (1 - scrollProgress)}`}
+            strokeLinecap="round"
+            className="transition-[stroke-dashoffset] duration-150 ease-out drop-shadow-[0_0_4px_hsl(var(--ocean)/0.6)]"
+          />
+        </svg>
+        <ArrowUp className="w-5 h-5 relative z-10 group-hover:-translate-y-0.5 transition-transform" />
       </button>
     </div>
   );
