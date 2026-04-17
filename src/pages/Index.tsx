@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp } from "lucide-react";
+import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
+import SideNavigator from "@/components/SideNavigator";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import ImageReveal from "@/components/ImageReveal";
@@ -38,6 +40,7 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>("");
   const { lang, toggleLang, t } = useLanguage();
@@ -204,6 +207,7 @@ const Index = () => {
       <DepthMeter />
       <MagneticCursor />
       <HUDOverlay />
+      <SideNavigator items={navItems} />
 
       {/* Navigation */}
       <nav
@@ -912,9 +916,25 @@ const Index = () => {
             <p className="text-xl text-foreground/50 mb-3 leading-relaxed">
               {t("Kontaktpersonen: Jörg Mathieu & Martin Wenzel", "Contact: Jörg Mathieu & Martin Wenzel")}
             </p>
-            <p className="text-2xl text-ocean mb-12 font-light">
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText("info@nauticdiscovery.com");
+                setEmailCopied(true);
+                toast.success(t("E-Mail kopiert", "Email copied"), {
+                  description: "info@nauticdiscovery.com",
+                });
+                setTimeout(() => setEmailCopied(false), 2000);
+              }}
+              className="group inline-flex items-center gap-3 text-2xl text-ocean mb-12 font-light hover:text-ocean-glow transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50 rounded-lg px-3 py-1"
+              aria-label={t("E-Mail-Adresse kopieren", "Copy email address")}
+            >
               info@nauticdiscovery.com
-            </p>
+              {emailCopied ? (
+                <Check className="w-5 h-5 text-ocean-glow" />
+              ) : (
+                <Copy className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" />
+              )}
+            </button>
           </ScrollReveal>
           <ScrollReveal delay={200}>
             <a href="mailto:info@nauticdiscovery.com">
