@@ -980,15 +980,30 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* Scroll to top */}
+      {/* Scroll to top with progress ring */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 ${
+        className={`fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full glass flex items-center justify-center text-ocean hover:text-ocean-glow hover:scale-110 transition-all duration-500 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/50 ${
           showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         aria-label="Scroll to top"
       >
-        <ArrowUp className="w-5 h-5" />
+        <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="25" fill="none" stroke="hsl(var(--ocean) / 0.1)" strokeWidth="2" />
+          <circle
+            cx="28"
+            cy="28"
+            r="25"
+            fill="none"
+            stroke="hsl(var(--ocean))"
+            strokeWidth="2"
+            strokeDasharray={`${2 * Math.PI * 25}`}
+            strokeDashoffset={`${2 * Math.PI * 25 * (1 - scrollProgress)}`}
+            strokeLinecap="round"
+            className="transition-[stroke-dashoffset] duration-150 ease-out drop-shadow-[0_0_4px_hsl(var(--ocean)/0.6)]"
+          />
+        </svg>
+        <ArrowUp className="w-5 h-5 relative z-10 group-hover:-translate-y-0.5 transition-transform" />
       </button>
     </div>
   );
