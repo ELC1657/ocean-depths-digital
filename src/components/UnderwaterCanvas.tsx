@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface Particle {
   x: number;
@@ -17,6 +18,7 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
   const mouseRef = useRef({ x: -1, y: -1 });
   const particlesRef = useRef<Particle[]>([]);
   const animFrameRef = useRef<number>(0);
+  const reduced = useReducedMotion();
 
   const createParticle = useCallback((width: number, height: number, type?: Particle["type"]): Particle => {
     const t = type || (["bubble", "plankton", "debris"] as const)[Math.floor(Math.random() * 3)];
@@ -34,6 +36,7 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
   }, []);
 
   useEffect(() => {
+    if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -45,8 +48,8 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
     };
     resize();
 
-    // Initialize particles
-    const count = 80;
+    // Initialize particles (reduced from 80 → 40)
+    const count = 40;
     particlesRef.current = Array.from({ length: count }, () =>
       createParticle(canvas.width, canvas.height)
     );
@@ -139,12 +142,20 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
     };
 
     animate();
+
+    const onVis = () => {
+      cancelAnimationFrame(animFrameRef.current);
+      if (!document.hidden) animate();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     return () => {
       cancelAnimationFrame(animFrameRef.current);
+      document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", resize);
     };
-  }, [createParticle]);
+  }, [createParticle, reduced]);
 
   return (
     <canvas

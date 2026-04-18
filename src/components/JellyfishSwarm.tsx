@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface Jellyfish {
   x: number;
@@ -17,8 +18,10 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -1, y: -1 });
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -30,7 +33,7 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
     };
     resize();
 
-    const jellies: Jellyfish[] = Array.from({ length: 12 }, () => ({
+    const jellies: Jellyfish[] = Array.from({ length: 7 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 25 + 15,
