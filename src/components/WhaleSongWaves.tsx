@@ -79,13 +79,6 @@ const WhaleSongWaves = ({ className = "" }: { className?: string }) => {
     };
   }, [reduced]);
 
-    draw();
-    return () => {
-      cancelAnimationFrame(animRef.current);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
   return (
     <canvas
       ref={canvasRef}
