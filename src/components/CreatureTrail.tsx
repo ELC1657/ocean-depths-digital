@@ -95,7 +95,7 @@ const CreatureTrail = () => {
       window.removeEventListener("mousemove", handleMove);
       cancelAnimationFrame(animRef.current);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <canvas
