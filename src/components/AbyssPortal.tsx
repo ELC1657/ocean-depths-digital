@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 /** A massive rotating vortex/portal effect — full-width section divider */
 const AbyssPortal = ({ className = "" }: { className?: string }) => {

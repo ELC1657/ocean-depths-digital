@@ -128,12 +128,20 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
     };
 
     draw();
+
+    const onVis = () => {
+      cancelAnimationFrame(animRef.current);
+      if (!document.hidden) draw();
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     return () => {
       cancelAnimationFrame(animRef.current);
+      document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <canvas
