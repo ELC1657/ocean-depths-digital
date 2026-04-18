@@ -28,6 +28,11 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
 
     let t = 0;
     const draw = () => {
+      // Skip drawing entirely when off-screen — saves a ton of paint cost
+      if (!inView) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
       const cx = w / 2;
@@ -36,15 +41,15 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
       ctx.clearRect(0, 0, w, h);
       t += 0.008;
 
-      // Outer vortex rings
-      for (let ring = 0; ring < 40; ring++) {
-        const radius = 20 + ring * (Math.min(w, h) * 0.015);
+      // Outer vortex rings (reduced from 40 → 24, segments 60 → 40)
+      for (let ring = 0; ring < 24; ring++) {
+        const radius = 20 + ring * (Math.min(w, h) * 0.025);
         const angleOffset = t * (1.5 - ring * 0.03) + ring * 0.15;
-        const alpha = Math.max(0, 0.15 - ring * 0.003);
+        const alpha = Math.max(0, 0.18 - ring * 0.005);
         const hue = 190 + Math.sin(t + ring * 0.1) * 15;
 
         ctx.beginPath();
-        const segments = 60;
+        const segments = 40;
         for (let i = 0; i <= segments; i++) {
           const a = (i / segments) * Math.PI * 2 + angleOffset;
           const wobble = Math.sin(a * 3 + t * 2) * (3 + ring * 0.5);
@@ -103,11 +108,18 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
     };
 
     draw();
+    const onVis = () => {
+      cancelAnimationFrame(animRef.current);
+      if (!document.hidden) draw();
+    };
+    document.addEventListener("visibilitychange", onVis);
     return () => {
       cancelAnimationFrame(animRef.current);
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <div className={`relative h-[40vh] overflow-hidden ${className}`}>
