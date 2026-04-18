@@ -24,6 +24,8 @@ import TiltCard from "@/components/TiltCard";
 import CreatureTrail from "@/components/CreatureTrail";
 import KrakenAwakens from "@/components/KrakenAwakens";
 import DepthZoneIndicator from "@/components/DepthZoneIndicator";
+import PressureShake from "@/components/PressureShake";
+import AmbientSound from "@/components/AmbientSound";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -214,6 +216,8 @@ const Index = () => {
       <CreatureTrail />
       <DepthZoneIndicator />
       <KrakenAwakens />
+      <PressureShake />
+      <AmbientSound />
 
       {/* Navigation */}
       <nav
