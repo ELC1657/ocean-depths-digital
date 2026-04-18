@@ -5,8 +5,10 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 const AbyssPortal = ({ className = "" }: { className?: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -19,6 +21,10 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
     };
     resize();
     window.addEventListener("resize", resize);
+
+    let inView = false;
+    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { rootMargin: "100px" });
+    io.observe(canvas);
 
     let t = 0;
     const draw = () => {
