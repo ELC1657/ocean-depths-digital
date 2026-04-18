@@ -1,11 +1,14 @@
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 /** A massive rotating vortex/portal effect — full-width section divider */
 const AbyssPortal = ({ className = "" }: { className?: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -19,8 +22,17 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
     resize();
     window.addEventListener("resize", resize);
 
+    let inView = false;
+    const io = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { rootMargin: "100px" });
+    io.observe(canvas);
+
     let t = 0;
     const draw = () => {
+      // Skip drawing entirely when off-screen — saves a ton of paint cost
+      if (!inView) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
       const cx = w / 2;
@@ -29,15 +41,15 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
       ctx.clearRect(0, 0, w, h);
       t += 0.008;
 
-      // Outer vortex rings
-      for (let ring = 0; ring < 40; ring++) {
-        const radius = 20 + ring * (Math.min(w, h) * 0.015);
+      // Outer vortex rings (reduced from 40 → 24, segments 60 → 40)
+      for (let ring = 0; ring < 24; ring++) {
+        const radius = 20 + ring * (Math.min(w, h) * 0.025);
         const angleOffset = t * (1.5 - ring * 0.03) + ring * 0.15;
-        const alpha = Math.max(0, 0.15 - ring * 0.003);
+        const alpha = Math.max(0, 0.18 - ring * 0.005);
         const hue = 190 + Math.sin(t + ring * 0.1) * 15;
 
         ctx.beginPath();
-        const segments = 60;
+        const segments = 40;
         for (let i = 0; i <= segments; i++) {
           const a = (i / segments) * Math.PI * 2 + angleOffset;
           const wobble = Math.sin(a * 3 + t * 2) * (3 + ring * 0.5);
@@ -96,11 +108,18 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
     };
 
     draw();
+    const onVis = () => {
+      cancelAnimationFrame(animRef.current);
+      if (!document.hidden) draw();
+    };
+    document.addEventListener("visibilitychange", onVis);
     return () => {
       cancelAnimationFrame(animRef.current);
+      io.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("resize", resize);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <div className={`relative h-[40vh] overflow-hidden ${className}`}>

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface TrailPoint {
   x: number;
@@ -16,8 +17,13 @@ const CreatureTrail = () => {
   const points = useRef<TrailPoint[]>([]);
   const mouse = useRef({ x: -1000, y: -1000, lastX: -1000, lastY: -1000 });
   const animRef = useRef<number>(0);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
+    // Skip on touch-only devices (no hover) — saves perf where the trail isn't visible anyway
+    if (window.matchMedia("(hover: none)").matches) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -89,7 +95,7 @@ const CreatureTrail = () => {
       window.removeEventListener("mousemove", handleMove);
       cancelAnimationFrame(animRef.current);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <canvas
