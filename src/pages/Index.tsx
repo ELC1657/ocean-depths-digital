@@ -219,6 +219,7 @@ const Index = () => {
       <KrakenAwakens />
       <PressureShake />
       <AmbientSound />
+      <ScrollProgressBar />
 
       {/* Navigation */}
       <nav
