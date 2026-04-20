@@ -26,6 +26,7 @@ import KrakenAwakens from "@/components/KrakenAwakens";
 import DepthZoneIndicator from "@/components/DepthZoneIndicator";
 import PressureShake from "@/components/PressureShake";
 import AmbientSound from "@/components/AmbientSound";
+import ScrollProgressBar from "@/components/ScrollProgressBar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -218,6 +219,7 @@ const Index = () => {
       <KrakenAwakens />
       <PressureShake />
       <AmbientSound />
+      <ScrollProgressBar />
 
       {/* Navigation */}
       <nav
