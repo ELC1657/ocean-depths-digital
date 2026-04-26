@@ -457,7 +457,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <AbyssPortal />
+      <Suspense fallback={null}><AbyssPortal /></Suspense>
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -512,7 +512,7 @@ const Index = () => {
 
       {/* Whale Song ambient waves */}
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(215, 80%, 5%))" }}>
-        <WhaleSongWaves />
+        <Suspense fallback={null}><WhaleSongWaves /></Suspense>
       </div>
 
       {/* ═══════════════════════════════════════ */}
@@ -661,7 +661,9 @@ const Index = () => {
                     <img
                       src={ongoingProjects[0].image}
                       alt={ongoingProjects[0].title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card md:block hidden" />
                     <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent md:hidden" />
@@ -701,7 +703,9 @@ const Index = () => {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
                       <span className="absolute top-4 left-4 text-xs font-medium px-4 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-md">
@@ -748,7 +752,9 @@ const Index = () => {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 saturate-[0.7] group-hover:saturate-100"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 saturate-[0.7] group-hover:saturate-100 will-change-transform"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
                     </div>
@@ -770,7 +776,7 @@ const Index = () => {
         </div>
       </section>
 
-      <AbyssPortal />
+      <Suspense fallback={null}><AbyssPortal /></Suspense>
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
@@ -857,7 +863,9 @@ const Index = () => {
                         <img
                           src={member.image}
                           alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card hidden sm:block" />
                         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent sm:hidden" />
@@ -895,7 +903,7 @@ const Index = () => {
 
       {/* Whale Song ambient waves before contact */}
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(210, 100%, 6%))" }}>
-        <WhaleSongWaves />
+        <Suspense fallback={null}><WhaleSongWaves /></Suspense>
       </div>
 
       {/* ═══════════════════════════════════════ */}
