@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import SideNavigator from "@/components/SideNavigator";
@@ -12,21 +12,22 @@ import UnderwaterCanvas from "@/components/UnderwaterCanvas";
 import DepthMeter from "@/components/DepthMeter";
 import SonarSweep from "@/components/SonarSweep";
 import ParallaxSection from "@/components/ParallaxSection";
-import FloatingDebris from "@/components/FloatingDebris";
-import DepthPressure from "@/components/DepthPressure";
-import JellyfishSwarm from "@/components/JellyfishSwarm";
 import MagneticCursor from "@/components/MagneticCursor";
 import DiveTransition from "@/components/DiveTransition";
-import AbyssPortal from "@/components/AbyssPortal";
-import HUDOverlay from "@/components/HUDOverlay";
-import WhaleSongWaves from "@/components/WhaleSongWaves";
 import TiltCard from "@/components/TiltCard";
-import CreatureTrail from "@/components/CreatureTrail";
 import KrakenAwakens from "@/components/KrakenAwakens";
 import DepthZoneIndicator from "@/components/DepthZoneIndicator";
-import PressureShake from "@/components/PressureShake";
 import AmbientSound from "@/components/AmbientSound";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+
+// Heavy / below-the-fold effects: lazy-loaded so they don't block initial render
+const FloatingDebris = lazy(() => import("@/components/FloatingDebris"));
+const DepthPressure = lazy(() => import("@/components/DepthPressure"));
+const JellyfishSwarm = lazy(() => import("@/components/JellyfishSwarm"));
+const HUDOverlay = lazy(() => import("@/components/HUDOverlay"));
+const AbyssPortal = lazy(() => import("@/components/AbyssPortal"));
+const WhaleSongWaves = lazy(() => import("@/components/WhaleSongWaves"));
+const PressureShake = lazy(() => import("@/components/PressureShake"));
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
@@ -205,19 +206,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative">
-      {/* Global atmospheric layers */}
+      {/* Global atmospheric layers — heavy effects deferred via Suspense */}
       <UnderwaterCanvas />
-      <JellyfishSwarm />
-      <FloatingDebris />
-      <DepthPressure />
+      <Suspense fallback={null}>
+        <JellyfishSwarm />
+        <FloatingDebris />
+        <DepthPressure />
+        <HUDOverlay />
+        <PressureShake />
+      </Suspense>
       <DepthMeter />
       <MagneticCursor />
-      <HUDOverlay />
       <SideNavigator items={navItems} />
-      <CreatureTrail />
       <DepthZoneIndicator />
       <KrakenAwakens />
-      <PressureShake />
       <AmbientSound />
       <ScrollProgressBar />
 
@@ -455,7 +457,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <AbyssPortal />
+      <Suspense fallback={null}><AbyssPortal /></Suspense>
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -510,7 +512,7 @@ const Index = () => {
 
       {/* Whale Song ambient waves */}
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(215, 80%, 5%))" }}>
-        <WhaleSongWaves />
+        <Suspense fallback={null}><WhaleSongWaves /></Suspense>
       </div>
 
       {/* ═══════════════════════════════════════ */}
@@ -659,7 +661,9 @@ const Index = () => {
                     <img
                       src={ongoingProjects[0].image}
                       alt={ongoingProjects[0].title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card md:block hidden" />
                     <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent md:hidden" />
@@ -699,7 +703,9 @@ const Index = () => {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
                       <span className="absolute top-4 left-4 text-xs font-medium px-4 py-1.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/30 backdrop-blur-md">
@@ -746,7 +752,9 @@ const Index = () => {
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 saturate-[0.7] group-hover:saturate-100"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 saturate-[0.7] group-hover:saturate-100 will-change-transform"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
                     </div>
@@ -768,7 +776,7 @@ const Index = () => {
         </div>
       </section>
 
-      <AbyssPortal />
+      <Suspense fallback={null}><AbyssPortal /></Suspense>
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
@@ -855,7 +863,9 @@ const Index = () => {
                         <img
                           src={member.image}
                           alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 will-change-transform"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card hidden sm:block" />
                         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent sm:hidden" />
@@ -893,7 +903,7 @@ const Index = () => {
 
       {/* Whale Song ambient waves before contact */}
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(210, 100%, 6%))" }}>
-        <WhaleSongWaves />
+        <Suspense fallback={null}><WhaleSongWaves /></Suspense>
       </div>
 
       {/* ═══════════════════════════════════════ */}
