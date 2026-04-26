@@ -32,6 +32,82 @@
     --cream: 40 25% 95%;
     --deep: 220 100% 3%;
     --abyss: 215 80% 8%;
+
+    /* ========================================
+       LIQUID GLASS THEME TOKENS
+       Transparent, fluid, refractive surfaces
+       ======================================== */
+
+    /* Tinted glass surfaces (HSL + alpha applied at use-site) */
+    --glass-tint:           200 60% 90%;     /* cool neutral highlight */
+    --glass-tint-warm:      40 50% 90%;      /* warm reflection */
+    --glass-tint-deep:      210 80% 12%;     /* deep ocean glass */
+    --glass-edge:           195 100% 70%;    /* refractive rim color */
+    --glass-shine:          0 0% 100%;       /* specular highlight */
+
+    /* Surface alpha scale (low → high opacity) */
+    --glass-alpha-1: 0.04;
+    --glass-alpha-2: 0.08;
+    --glass-alpha-3: 0.14;
+    --glass-alpha-4: 0.22;
+    --glass-alpha-5: 0.34;
+
+    /* Blur scale */
+    --glass-blur-sm: 8px;
+    --glass-blur-md: 18px;
+    --glass-blur-lg: 28px;
+    --glass-blur-xl: 44px;
+
+    /* Saturation boost behind glass (makes refraction feel alive) */
+    --glass-saturate: 1.6;
+
+    /* Border / rim */
+    --glass-border-light: hsl(var(--glass-shine) / 0.22);
+    --glass-border-dark:  hsl(var(--glass-tint-deep) / 0.55);
+
+    /* Shadow stack — floating glass */
+    --glass-shadow-sm:
+      0 1px 0 hsl(var(--glass-shine) / 0.15) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.4) inset,
+      0 6px 20px -6px hsl(var(--deep) / 0.6);
+    --glass-shadow-md:
+      0 1px 0 hsl(var(--glass-shine) / 0.22) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.5) inset,
+      0 12px 40px -10px hsl(var(--deep) / 0.7),
+      0 4px 12px -4px hsl(var(--ocean) / 0.15);
+    --glass-shadow-lg:
+      0 1px 0 hsl(var(--glass-shine) / 0.3) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.6) inset,
+      0 24px 60px -12px hsl(var(--deep) / 0.8),
+      0 8px 24px -6px hsl(var(--ocean) / 0.25);
+
+    /* Refraction gradients */
+    --glass-refract:
+      linear-gradient(135deg,
+        hsl(var(--glass-shine) / 0.18) 0%,
+        hsl(var(--glass-tint) / 0.05) 35%,
+        hsl(var(--glass-tint-deep) / 0.08) 65%,
+        hsl(var(--glass-edge) / 0.12) 100%);
+
+    --glass-refract-warm:
+      linear-gradient(135deg,
+        hsl(var(--glass-shine) / 0.2) 0%,
+        hsl(var(--glass-tint-warm) / 0.06) 50%,
+        hsl(var(--brass) / 0.1) 100%);
+
+    /* Specular sheen — placed as overlay */
+    --glass-sheen:
+      linear-gradient(115deg,
+        transparent 0%,
+        transparent 38%,
+        hsl(var(--glass-shine) / 0.18) 48%,
+        hsl(var(--glass-shine) / 0.04) 52%,
+        transparent 62%,
+        transparent 100%);
+
+    /* Liquid easing */
+    --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-liquid-soft: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -304,5 +380,294 @@
       hsl(195 100% 45% / 0.015) 2px,
       hsl(195 100% 45% / 0.015) 4px
     );
+  }
+
+  /* ============================================================
+     LIQUID GLASS THEME — Components
+     Use .lg-* classes for panels, buttons, inputs, chips, etc.
+     ============================================================ */
+
+  /* Base panel — refractive frosted surface */
+  .lg-panel {
+    position: relative;
+    isolation: isolate;
+    background:
+      var(--glass-refract),
+      hsl(var(--glass-tint-deep) / var(--glass-alpha-3));
+    backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border-light);
+    border-radius: 1rem;
+    box-shadow: var(--glass-shadow-md);
+    overflow: hidden;
+  }
+
+  /* Specular sheen overlay (shared by panel/button) */
+  .lg-panel::before,
+  .lg-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-sheen);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.9;
+    z-index: 1;
+  }
+
+  /* Inner refractive rim */
+  .lg-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--glass-shine) / 0.08),
+      inset 0 1px 1px hsl(var(--glass-shine) / 0.25),
+      inset 0 -1px 1px hsl(var(--glass-tint-deep) / 0.45);
+    z-index: 2;
+  }
+
+  .lg-panel > * { position: relative; z-index: 3; }
+
+  /* Variants */
+  .lg-panel-sm { border-radius: 0.625rem; backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate)); box-shadow: var(--glass-shadow-sm); }
+  .lg-panel-lg { border-radius: 1.5rem; backdrop-filter: blur(var(--glass-blur-lg)) saturate(var(--glass-saturate)); box-shadow: var(--glass-shadow-lg); }
+  .lg-panel-xl { border-radius: 2rem; backdrop-filter: blur(var(--glass-blur-xl)) saturate(var(--glass-saturate)); box-shadow: var(--glass-shadow-lg); }
+
+  /* Tinted variants */
+  .lg-panel-ocean {
+    background:
+      linear-gradient(135deg,
+        hsl(var(--ocean) / 0.18) 0%,
+        hsl(var(--ocean-glow) / 0.06) 50%,
+        hsl(var(--ocean) / 0.12) 100%),
+      hsl(var(--glass-tint-deep) / var(--glass-alpha-3));
+    border-color: hsl(var(--ocean) / 0.28);
+  }
+
+  .lg-panel-warm {
+    background:
+      var(--glass-refract-warm),
+      hsl(var(--glass-tint-deep) / var(--glass-alpha-3));
+    border-color: hsl(var(--brass) / 0.28);
+  }
+
+  /* Liquid Glass Button */
+  .lg-button {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: hsl(var(--foreground));
+    background:
+      var(--glass-refract),
+      hsl(var(--glass-tint-deep) / var(--glass-alpha-4));
+    backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border-light);
+    box-shadow: var(--glass-shadow-sm);
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+      transform 0.45s var(--ease-liquid),
+      box-shadow 0.45s var(--ease-liquid),
+      border-color 0.3s var(--ease-liquid-soft),
+      background 0.3s var(--ease-liquid-soft);
+  }
+
+  .lg-button > * { position: relative; z-index: 3; }
+
+  .lg-button:hover {
+    transform: translateY(-2px);
+    border-color: hsl(var(--ocean-glow) / 0.5);
+    box-shadow:
+      var(--glass-shadow-md),
+      0 0 24px -4px hsl(var(--ocean-glow) / 0.4);
+  }
+
+  .lg-button:active { transform: translateY(0); transition-duration: 0.15s; }
+
+  /* Sliding light streak on hover */
+  .lg-button::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -60%;
+    width: 50%;
+    background: linear-gradient(115deg,
+      transparent 0%,
+      hsl(var(--glass-shine) / 0.35) 50%,
+      transparent 100%);
+    transform: skewX(-20deg);
+    pointer-events: none;
+    z-index: 2;
+    transition: left 0.7s var(--ease-liquid);
+  }
+
+  .lg-button:hover::after { left: 120%; }
+
+  /* Button variants */
+  .lg-button-primary {
+    background:
+      linear-gradient(135deg,
+        hsl(var(--ocean) / 0.55) 0%,
+        hsl(var(--ocean-glow) / 0.35) 100%),
+      hsl(var(--ocean) / 0.2);
+    border-color: hsl(var(--ocean-glow) / 0.45);
+    color: hsl(var(--cream));
+    text-shadow: 0 1px 2px hsl(var(--deep) / 0.6);
+  }
+
+  .lg-button-ghost {
+    background: hsl(var(--glass-tint-deep) / 0.18);
+    border-color: hsl(var(--glass-shine) / 0.12);
+  }
+
+  /* Liquid Glass Input */
+  .lg-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    color: hsl(var(--foreground));
+    background:
+      linear-gradient(180deg,
+        hsl(var(--glass-tint-deep) / 0.45) 0%,
+        hsl(var(--glass-tint-deep) / 0.25) 100%);
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    border: 1px solid hsl(var(--glass-shine) / 0.12);
+    border-radius: 0.75rem;
+    box-shadow:
+      inset 0 1px 1px hsl(var(--glass-shine) / 0.18),
+      inset 0 -1px 1px hsl(var(--glass-tint-deep) / 0.5),
+      0 2px 8px -2px hsl(var(--deep) / 0.5);
+    transition: border-color 0.3s var(--ease-liquid-soft), box-shadow 0.3s var(--ease-liquid-soft);
+  }
+  .lg-input::placeholder { color: hsl(var(--muted-foreground) / 0.7); }
+  .lg-input:focus {
+    outline: none;
+    border-color: hsl(var(--ocean-glow) / 0.55);
+    box-shadow:
+      inset 0 1px 1px hsl(var(--glass-shine) / 0.22),
+      inset 0 -1px 1px hsl(var(--glass-tint-deep) / 0.5),
+      0 0 0 3px hsl(var(--ocean) / 0.18),
+      0 0 24px -4px hsl(var(--ocean-glow) / 0.35);
+  }
+
+  /* Chip / Pill */
+  .lg-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8125rem;
+    border-radius: 999px;
+    background: hsl(var(--glass-tint-deep) / 0.35);
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    border: 1px solid hsl(var(--glass-shine) / 0.14);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--glass-shine) / 0.18),
+      0 2px 8px -3px hsl(var(--deep) / 0.5);
+    color: hsl(var(--foreground));
+  }
+
+  /* Icon container — frosted bubble */
+  .lg-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 30% 25%,
+        hsl(var(--glass-shine) / 0.35) 0%,
+        hsl(var(--glass-shine) / 0.05) 35%,
+        transparent 60%),
+      hsl(var(--glass-tint-deep) / 0.4);
+    backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-sm)) saturate(var(--glass-saturate));
+    border: 1px solid hsl(var(--glass-shine) / 0.18);
+    box-shadow:
+      inset 0 1px 1px hsl(var(--glass-shine) / 0.3),
+      inset 0 -1px 1px hsl(var(--glass-tint-deep) / 0.5),
+      0 4px 12px -3px hsl(var(--deep) / 0.5);
+    color: hsl(var(--ocean-glow));
+  }
+
+  /* Liquid background — animated gradient blobs behind frosted surfaces */
+  .lg-bg {
+    position: relative;
+    overflow: hidden;
+    background: hsl(var(--background));
+  }
+  .lg-bg::before,
+  .lg-bg::after {
+    content: '';
+    position: absolute;
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+    animation: lg-drift 22s var(--ease-liquid) infinite alternate;
+  }
+  .lg-bg::before {
+    top: -20%; left: -15%;
+    background: radial-gradient(circle, hsl(var(--ocean) / 0.55), transparent 65%);
+  }
+  .lg-bg::after {
+    bottom: -25%; right: -20%;
+    background: radial-gradient(circle, hsl(var(--ocean-glow) / 0.45), transparent 65%);
+    animation-delay: -11s;
+  }
+  .lg-bg > * { position: relative; z-index: 1; }
+
+  @keyframes lg-drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(8%, -6%) scale(1.1); }
+    100% { transform: translate(-6%, 8%) scale(0.95); }
+  }
+
+  /* Text on glass */
+  .lg-text {
+    color: hsl(var(--foreground));
+    text-shadow: 0 1px 2px hsl(var(--deep) / 0.5);
+  }
+  .lg-text-muted {
+    color: hsl(var(--muted-foreground));
+    text-shadow: 0 1px 2px hsl(var(--deep) / 0.4);
+  }
+
+  /* Liquid hover lift for any glass element */
+  .lg-hover {
+    transition: transform 0.5s var(--ease-liquid), box-shadow 0.5s var(--ease-liquid);
+  }
+  .lg-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glass-shadow-lg);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .lg-bg::before, .lg-bg::after { animation: none; }
+    .lg-button, .lg-button::after, .lg-hover { transition: none; }
+  }
+
+  /* Safari fallback when backdrop-filter unsupported */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .lg-panel, .lg-button, .lg-input, .lg-chip, .lg-icon {
+      background-color: hsl(var(--glass-tint-deep) / 0.85);
+    }
   }
 }
