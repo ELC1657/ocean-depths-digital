@@ -206,19 +206,20 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden relative">
-      {/* Global atmospheric layers */}
+      {/* Global atmospheric layers — heavy effects deferred via Suspense */}
       <UnderwaterCanvas />
-      <JellyfishSwarm />
-      <FloatingDebris />
-      <DepthPressure />
+      <Suspense fallback={null}>
+        <JellyfishSwarm />
+        <FloatingDebris />
+        <DepthPressure />
+        <HUDOverlay />
+        <PressureShake />
+      </Suspense>
       <DepthMeter />
       <MagneticCursor />
-      <HUDOverlay />
       <SideNavigator items={navItems} />
-      <CreatureTrail />
       <DepthZoneIndicator />
       <KrakenAwakens />
-      <PressureShake />
       <AmbientSound />
       <ScrollProgressBar />
 
