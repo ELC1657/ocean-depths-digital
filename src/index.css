@@ -32,6 +32,82 @@
     --cream: 40 25% 95%;
     --deep: 220 100% 3%;
     --abyss: 215 80% 8%;
+
+    /* ========================================
+       LIQUID GLASS THEME TOKENS
+       Transparent, fluid, refractive surfaces
+       ======================================== */
+
+    /* Tinted glass surfaces (HSL + alpha applied at use-site) */
+    --glass-tint:           200 60% 90%;     /* cool neutral highlight */
+    --glass-tint-warm:      40 50% 90%;      /* warm reflection */
+    --glass-tint-deep:      210 80% 12%;     /* deep ocean glass */
+    --glass-edge:           195 100% 70%;    /* refractive rim color */
+    --glass-shine:          0 0% 100%;       /* specular highlight */
+
+    /* Surface alpha scale (low → high opacity) */
+    --glass-alpha-1: 0.04;
+    --glass-alpha-2: 0.08;
+    --glass-alpha-3: 0.14;
+    --glass-alpha-4: 0.22;
+    --glass-alpha-5: 0.34;
+
+    /* Blur scale */
+    --glass-blur-sm: 8px;
+    --glass-blur-md: 18px;
+    --glass-blur-lg: 28px;
+    --glass-blur-xl: 44px;
+
+    /* Saturation boost behind glass (makes refraction feel alive) */
+    --glass-saturate: 1.6;
+
+    /* Border / rim */
+    --glass-border-light: hsl(var(--glass-shine) / 0.22);
+    --glass-border-dark:  hsl(var(--glass-tint-deep) / 0.55);
+
+    /* Shadow stack — floating glass */
+    --glass-shadow-sm:
+      0 1px 0 hsl(var(--glass-shine) / 0.15) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.4) inset,
+      0 6px 20px -6px hsl(var(--deep) / 0.6);
+    --glass-shadow-md:
+      0 1px 0 hsl(var(--glass-shine) / 0.22) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.5) inset,
+      0 12px 40px -10px hsl(var(--deep) / 0.7),
+      0 4px 12px -4px hsl(var(--ocean) / 0.15);
+    --glass-shadow-lg:
+      0 1px 0 hsl(var(--glass-shine) / 0.3) inset,
+      0 -1px 0 hsl(var(--glass-tint-deep) / 0.6) inset,
+      0 24px 60px -12px hsl(var(--deep) / 0.8),
+      0 8px 24px -6px hsl(var(--ocean) / 0.25);
+
+    /* Refraction gradients */
+    --glass-refract:
+      linear-gradient(135deg,
+        hsl(var(--glass-shine) / 0.18) 0%,
+        hsl(var(--glass-tint) / 0.05) 35%,
+        hsl(var(--glass-tint-deep) / 0.08) 65%,
+        hsl(var(--glass-edge) / 0.12) 100%);
+
+    --glass-refract-warm:
+      linear-gradient(135deg,
+        hsl(var(--glass-shine) / 0.2) 0%,
+        hsl(var(--glass-tint-warm) / 0.06) 50%,
+        hsl(var(--brass) / 0.1) 100%);
+
+    /* Specular sheen — placed as overlay */
+    --glass-sheen:
+      linear-gradient(115deg,
+        transparent 0%,
+        transparent 38%,
+        hsl(var(--glass-shine) / 0.18) 48%,
+        hsl(var(--glass-shine) / 0.04) 52%,
+        transparent 62%,
+        transparent 100%);
+
+    /* Liquid easing */
+    --ease-liquid: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-liquid-soft: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
