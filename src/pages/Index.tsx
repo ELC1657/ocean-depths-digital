@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy, Suspense } from "react";
 import { Mail, MapPin, ChevronRight, Waves, ExternalLink, Globe, Anchor, Compass, ChevronDown, Menu, X, ArrowUp, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import SideNavigator from "@/components/SideNavigator";
@@ -12,21 +12,22 @@ import UnderwaterCanvas from "@/components/UnderwaterCanvas";
 import DepthMeter from "@/components/DepthMeter";
 import SonarSweep from "@/components/SonarSweep";
 import ParallaxSection from "@/components/ParallaxSection";
-import FloatingDebris from "@/components/FloatingDebris";
-import DepthPressure from "@/components/DepthPressure";
-import JellyfishSwarm from "@/components/JellyfishSwarm";
 import MagneticCursor from "@/components/MagneticCursor";
 import DiveTransition from "@/components/DiveTransition";
-import AbyssPortal from "@/components/AbyssPortal";
-import HUDOverlay from "@/components/HUDOverlay";
-import WhaleSongWaves from "@/components/WhaleSongWaves";
 import TiltCard from "@/components/TiltCard";
-import CreatureTrail from "@/components/CreatureTrail";
 import KrakenAwakens from "@/components/KrakenAwakens";
 import DepthZoneIndicator from "@/components/DepthZoneIndicator";
-import PressureShake from "@/components/PressureShake";
 import AmbientSound from "@/components/AmbientSound";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+
+// Heavy / below-the-fold effects: lazy-loaded so they don't block initial render
+const FloatingDebris = lazy(() => import("@/components/FloatingDebris"));
+const DepthPressure = lazy(() => import("@/components/DepthPressure"));
+const JellyfishSwarm = lazy(() => import("@/components/JellyfishSwarm"));
+const HUDOverlay = lazy(() => import("@/components/HUDOverlay"));
+const AbyssPortal = lazy(() => import("@/components/AbyssPortal"));
+const WhaleSongWaves = lazy(() => import("@/components/WhaleSongWaves"));
+const PressureShake = lazy(() => import("@/components/PressureShake"));
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/hero-heritage.jpg";
 import logo from "@/assets/logo.png";
