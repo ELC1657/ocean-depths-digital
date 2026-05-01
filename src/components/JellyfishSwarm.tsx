@@ -28,14 +28,21 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
 
-    const jellies: Jellyfish[] = Array.from({ length: 7 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
+    const W = () => window.innerWidth;
+    const H = () => window.innerHeight;
+
+    const jellies: Jellyfish[] = Array.from({ length: 5 }, () => ({
+      x: Math.random() * W(),
+      y: Math.random() * H(),
       size: Math.random() * 25 + 15,
       phase: Math.random() * Math.PI * 2,
       speed: Math.random() * 0.3 + 0.1,
@@ -47,14 +54,14 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
     }));
 
     const onMouse = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY + window.scrollY };
+      mouseRef.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener("mousemove", onMouse);
+    window.addEventListener("mousemove", onMouse, { passive: true });
     window.addEventListener("resize", resize);
 
     let t = 0;
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, W(), H());
       t += 0.016;
 
       jellies.forEach((j) => {
@@ -75,8 +82,8 @@ const JellyfishSwarm = ({ className = "" }: { className?: string }) => {
         }
 
         if (j.y < -100) {
-          j.y = canvas.height + 50;
-          j.x = Math.random() * canvas.width;
+          j.y = H() + 50;
+          j.x = Math.random() * W();
         }
 
         const pulse = Math.sin(j.phase) * 0.3 + 0.7;

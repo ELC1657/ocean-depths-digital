@@ -54,13 +54,22 @@ const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+    let lastScrolled = false;
+    let lastShowTop = false;
+    const update = () => {
+      ticking = false;
       const y = window.scrollY;
-      setScrolled(y > 20);
+      const nextScrolled = y > 20;
+      const nextShowTop = y > 800;
+      if (nextScrolled !== lastScrolled) { lastScrolled = nextScrolled; setScrolled(nextScrolled); }
+      if (nextShowTop !== lastShowTop) { lastShowTop = nextShowTop; setShowScrollTop(nextShowTop); }
       setScrollY(y);
-      setShowScrollTop(y > 800);
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, y / max) : 0);
+    };
+    const handleScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -100,16 +109,26 @@ const Index = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [mobileMenuOpen]);
 
-  // Card mouse tracking for spotlight effect
+  // Card mouse tracking for spotlight effect (rAF-throttled)
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      document.querySelectorAll(".card-modern").forEach((card) => {
-        const rect = (card as HTMLElement).getBoundingClientRect();
-        (card as HTMLElement).style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-        (card as HTMLElement).style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-      });
+    let ticking = false;
+    let lx = 0, ly = 0;
+    const apply = () => {
+      ticking = false;
+      const cards = document.querySelectorAll<HTMLElement>(".card-modern");
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        const rect = card.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) continue;
+        card.style.setProperty("--mouse-x", `${lx - rect.left}px`);
+        card.style.setProperty("--mouse-y", `${ly - rect.top}px`);
+      }
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMouseMove = (e: MouseEvent) => {
+      lx = e.clientX; ly = e.clientY;
+      if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 

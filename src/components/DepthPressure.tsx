@@ -5,9 +5,18 @@ const DepthPressure = () => {
   const [depth, setDepth] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+    let last = -1;
+    const update = () => {
+      ticking = false;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      setDepth(Math.min(1, window.scrollY / maxScroll));
+      const next = maxScroll > 0 ? Math.min(1, window.scrollY / maxScroll) : 0;
+      // Quantize to 2% steps to drop redundant style writes
+      const q = Math.round(next * 50) / 50;
+      if (q !== last) { last = q; setDepth(q); }
+    };
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
