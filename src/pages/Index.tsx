@@ -54,13 +54,22 @@ const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    let ticking = false;
+    let lastScrolled = false;
+    let lastShowTop = false;
+    const update = () => {
+      ticking = false;
       const y = window.scrollY;
-      setScrolled(y > 20);
+      const nextScrolled = y > 20;
+      const nextShowTop = y > 800;
+      if (nextScrolled !== lastScrolled) { lastScrolled = nextScrolled; setScrolled(nextScrolled); }
+      if (nextShowTop !== lastShowTop) { lastShowTop = nextShowTop; setShowScrollTop(nextShowTop); }
       setScrollY(y);
-      setShowScrollTop(y > 800);
       const max = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(max > 0 ? Math.min(1, y / max) : 0);
+    };
+    const handleScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
