@@ -6,12 +6,22 @@ const DepthMeter = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      setDepth(Math.round(scrollPercent * 400));
-      setVisible(window.scrollY > 200);
+    let ticking = false;
+    let lastDepth = -1;
+    let lastVisible = false;
+    const update = () => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = max > 0 ? window.scrollY / max : 0;
+      const d = Math.round(scrollPercent * 400);
+      const v = window.scrollY > 200;
+      if (d !== lastDepth) { lastDepth = d; setDepth(d); }
+      if (v !== lastVisible) { lastVisible = v; setVisible(v); }
     };
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
