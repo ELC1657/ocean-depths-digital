@@ -61,28 +61,30 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
     );
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY + window.scrollY };
+      // Canvas is fixed to the viewport now — use viewport coords directly
+      mouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("resize", resize);
 
     let time = 0;
     const animate = () => {
       if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
       time += 0.016;
 
-      // Caustic light patterns
-      const scrollY = window.scrollY;
-      for (let i = 0; i < 5; i++) {
-        const cx = canvas.width * (0.1 + i * 0.2) + Math.sin(time * 0.3 + i) * 100;
-        const cy = scrollY * 0.3 + 200 + Math.cos(time * 0.2 + i * 1.5) * 150;
+      // Caustic light patterns (reduced from 5 → 3, viewport-anchored)
+      for (let i = 0; i < 3; i++) {
+        const cx = w * (0.15 + i * 0.35) + Math.sin(time * 0.3 + i) * 100;
+        const cy = h * 0.4 + Math.cos(time * 0.2 + i * 1.5) * 150;
         const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300 + Math.sin(time + i) * 100);
         gradient.addColorStop(0, `rgba(0, 180, 220, ${0.03 + Math.sin(time * 0.5 + i) * 0.015})`);
         gradient.addColorStop(1, "rgba(0, 180, 220, 0)");
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, w, h);
       }
 
       // Draw and update particles
@@ -91,7 +93,6 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
         p.x += p.vx + Math.sin(p.wobblePhase) * 0.5;
         p.y += p.vy;
 
-        // Mouse interaction
         const mx = mouseRef.current.x;
         const my = mouseRef.current.y;
         if (mx > 0) {
@@ -105,13 +106,11 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
           }
         }
 
-        // Damping
         p.vx *= 0.99;
         p.vy *= 0.99;
 
-        // Reset if out of bounds
-        if (p.y < -20 || p.y > canvas.height + 20 || p.x < -20 || p.x > canvas.width + 20) {
-          Object.assign(p, createParticle(canvas.width, canvas.height, p.type));
+        if (p.y < -20 || p.y > h + 20 || p.x < -20 || p.x > w + 20) {
+          Object.assign(p, createParticle(w, h, p.type));
         }
 
         ctx.save();
