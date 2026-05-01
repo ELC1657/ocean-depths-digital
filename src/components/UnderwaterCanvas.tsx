@@ -43,15 +43,21 @@ const UnderwaterCanvas = ({ className = "" }: { className?: string }) => {
     if (!ctx) return;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight * 5; // cover full page
+      // Only paint the visible viewport — fixed positioning means we don't need
+      // to cover the entire scroll height. Cuts GPU texture memory ~5x.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
 
-    // Initialize particles (reduced from 80 → 40)
-    const count = 40;
+    // Reduced from 40 → 30 — fewer particles needed for viewport-only canvas
+    const count = 30;
     particlesRef.current = Array.from({ length: count }, () =>
-      createParticle(canvas.width, canvas.height)
+      createParticle(window.innerWidth, window.innerHeight)
     );
 
     const handleMouseMove = (e: MouseEvent) => {
