@@ -13,7 +13,7 @@ import DepthMeter from "@/components/DepthMeter";
 import SonarSweep from "@/components/SonarSweep";
 import ParallaxSection from "@/components/ParallaxSection";
 import MagneticCursor from "@/components/MagneticCursor";
-import DiveTransition from "@/components/DiveTransition";
+
 import TiltCard from "@/components/TiltCard";
 import KrakenAwakens from "@/components/KrakenAwakens";
 import DepthZoneIndicator from "@/components/DepthZoneIndicator";
@@ -24,8 +24,6 @@ import ScrollProgressBar from "@/components/ScrollProgressBar";
 const FloatingDebris = lazy(() => import("@/components/FloatingDebris"));
 const DepthPressure = lazy(() => import("@/components/DepthPressure"));
 const JellyfishSwarm = lazy(() => import("@/components/JellyfishSwarm"));
-const HUDOverlay = lazy(() => import("@/components/HUDOverlay"));
-const AbyssPortal = lazy(() => import("@/components/AbyssPortal"));
 const WhaleSongWaves = lazy(() => import("@/components/WhaleSongWaves"));
 const PressureShake = lazy(() => import("@/components/PressureShake"));
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -231,7 +229,7 @@ const Index = () => {
         <JellyfishSwarm />
         <FloatingDebris />
         <DepthPressure />
-        <HUDOverlay />
+        
         <PressureShake />
       </Suspense>
       <DepthMeter />
@@ -476,7 +474,7 @@ const Index = () => {
       {/* ═══════════════════════════════════════ */}
       {/* MISSION — Cinematic quote with split parallax */}
       {/* ═══════════════════════════════════════ */}
-      <Suspense fallback={null}><AbyssPortal /></Suspense>
+      
 
       <section id="mission" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%) 0%, hsl(215, 80%, 5%) 50%, hsl(220, 100%, 3%) 100%)" }}>
         <BubbleField count={6} />
@@ -527,7 +525,7 @@ const Index = () => {
         </div>
       </section>
 
-      <DiveTransition />
+      
 
       {/* Whale Song ambient waves */}
       <div className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(220, 100%, 3%), hsl(215, 80%, 5%))" }}>
@@ -795,7 +793,6 @@ const Index = () => {
         </div>
       </section>
 
-      <Suspense fallback={null}><AbyssPortal /></Suspense>
 
       {/* ═══════════════════════════════════════ */}
       {/* TEAM — Dramatic portraits with opposing parallax */}
