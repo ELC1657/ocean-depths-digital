@@ -17,7 +17,7 @@ import MagneticCursor from "@/components/MagneticCursor";
 import TiltCard from "@/components/TiltCard";
 import KrakenAwakens from "@/components/KrakenAwakens";
 
-import AmbientSound from "@/components/AmbientSound";
+
 
 
 // Heavy / below-the-fold effects: lazy-loaded so they don't block initial render
@@ -237,7 +237,7 @@ const Index = () => {
       <SideNavigator items={navItems} />
       
       <KrakenAwakens />
-      <AmbientSound />
+      
       
 
       {/* Navigation */}
