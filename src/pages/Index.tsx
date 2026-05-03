@@ -16,7 +16,7 @@ import MagneticCursor from "@/components/MagneticCursor";
 
 import TiltCard from "@/components/TiltCard";
 import KrakenAwakens from "@/components/KrakenAwakens";
-import DepthZoneIndicator from "@/components/DepthZoneIndicator";
+
 import AmbientSound from "@/components/AmbientSound";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
 
@@ -235,7 +235,7 @@ const Index = () => {
       <DepthMeter />
       <MagneticCursor />
       <SideNavigator items={navItems} />
-      <DepthZoneIndicator />
+      
       <KrakenAwakens />
       <AmbientSound />
       <ScrollProgressBar />
