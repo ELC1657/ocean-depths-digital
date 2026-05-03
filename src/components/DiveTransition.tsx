@@ -62,15 +62,6 @@ const DiveTransition = ({ className = "" }: { className?: string }) => {
         }}
       />
 
-      {/* Center depth readout */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="glass-light rounded-full px-6 py-3 flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-ocean animate-pulse" />
-          <span className="text-xs font-mono text-ocean tracking-[0.3em] uppercase">
-            descending
-          </span>
-        </div>
-      </div>
 
       {/* Scatter particles */}
       {[...Array(20)].map((_, i) => (

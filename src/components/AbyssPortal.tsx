@@ -139,16 +139,6 @@ const AbyssPortal = ({ className = "" }: { className?: string }) => {
         className="w-full h-full"
         style={{ opacity: 0.9 }}
       />
-      {/* Center label */}
-      <div className="absolute inset-0 flex items-center justify-center z-[2]">
-        <div className="glass-light rounded-full px-5 py-2 flex items-center gap-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-ocean animate-pulse" />
-          <span className="text-[10px] font-mono text-ocean/70 tracking-[0.4em] uppercase">
-            anomaly detected
-          </span>
-          <div className="w-1.5 h-1.5 rounded-full bg-ocean animate-pulse" />
-        </div>
-      </div>
     </div>
   );
 };
