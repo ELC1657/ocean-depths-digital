@@ -536,15 +536,6 @@ const Index = () => {
       {/* ABOUT — Split dramatic with opposing parallax */}
       {/* ═══════════════════════════════════════ */}
       <section id="about" className="section-padding relative section-deep overflow-hidden">
-        {/* Giant background text — super slow parallax */}
-        <ParallaxSection speed={0.15} className="absolute inset-0 pointer-events-none overflow-hidden">
-          <span
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vw] font-serif font-bold tracking-tighter"
-            style={{ color: "hsl(195 100% 45% / 0.02)" }}
-          >
-            EXPLORE
-          </span>
-        </ParallaxSection>
 
         <div className="container-wide relative z-10">
           <div className="mb-20">
@@ -632,15 +623,6 @@ const Index = () => {
       <section id="projects" className="section-padding relative overflow-hidden" style={{ background: "linear-gradient(180deg, hsl(215, 80%, 5%) 0%, hsl(220, 100%, 3%) 40%, hsl(215, 80%, 5%) 100%)" }}>
         <BubbleField count={12} />
         
-        {/* Giant parallax depth number */}
-        <ParallaxSection speed={0.25} className="absolute inset-0 pointer-events-none overflow-hidden">
-          <span
-            className="absolute top-[20%] right-[-5%] text-[35vw] font-mono font-bold leading-none"
-            style={{ color: "hsl(195 100% 45% / 0.015)" }}
-          >
-            210m
-          </span>
-        </ParallaxSection>
 
         <div className="container-wide relative z-10">
           {/* Header with horizontal parallax */}
@@ -800,15 +782,6 @@ const Index = () => {
       <section id="team" className="section-padding relative section-deep overflow-hidden">
         <LightRays />
         
-        {/* Giant background text */}
-        <ParallaxSection speed={-0.2} className="absolute inset-0 pointer-events-none overflow-hidden">
-          <span
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[18vw] font-serif font-bold tracking-tighter"
-            style={{ color: "hsl(195 100% 45% / 0.015)" }}
-          >
-            TEAM
-          </span>
-        </ParallaxSection>
 
         <div className="container-wide relative z-10">
           <div className="mb-20">
