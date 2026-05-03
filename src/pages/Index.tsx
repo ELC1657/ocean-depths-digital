@@ -18,7 +18,7 @@ import TiltCard from "@/components/TiltCard";
 import KrakenAwakens from "@/components/KrakenAwakens";
 
 import AmbientSound from "@/components/AmbientSound";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
+
 
 // Heavy / below-the-fold effects: lazy-loaded so they don't block initial render
 const FloatingDebris = lazy(() => import("@/components/FloatingDebris"));
@@ -238,7 +238,7 @@ const Index = () => {
       
       <KrakenAwakens />
       <AmbientSound />
-      <ScrollProgressBar />
+      
 
       {/* Navigation */}
       <nav
