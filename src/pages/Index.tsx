@@ -412,7 +412,7 @@ const Index = () => {
 
             <h1 className="heading-display font-serif mb-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
               <span className="block text-foreground text-glow-strong">
-                {t("Faszination", "Fascination")}
+                {t("Faszination", "The Fascination of")}
               </span>
               <span className="block gradient-text mt-[-0.05em] whitespace-nowrap">
                 {t("Wracksuche", "Wreck Hunting")}
