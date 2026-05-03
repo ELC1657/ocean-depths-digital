@@ -823,7 +823,7 @@ const Index = () => {
           </ParallaxSection>
 
           {/* Team cards — opposing parallax */}
-          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mb-16">
+          <div className="grid md:grid-cols-2 gap-10 max-w-5xl mb-16 items-stretch">
             {[
               {
                 name: "Jörg Mathieu",
@@ -844,10 +844,10 @@ const Index = () => {
                 ),
               },
             ].map((member, i) => (
-              <ParallaxSection key={i} speed={i === 0 ? -0.08 : 0.08}>
-                <ScrollReveal delay={i * 200}>
-                  <div className="card-modern p-0 group overflow-hidden">
-                    <div className="flex flex-col sm:flex-row">
+              <ParallaxSection key={i} speed={0} className="h-full">
+                <ScrollReveal delay={i * 200} className="h-full">
+                  <div className="card-modern p-0 group overflow-hidden h-full">
+                    <div className="flex flex-col sm:flex-row h-full">
                       <div className="relative w-full sm:w-48 h-48 sm:h-auto overflow-hidden flex-shrink-0">
                         <img
                           src={member.image}
