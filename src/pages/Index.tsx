@@ -414,7 +414,7 @@ const Index = () => {
               <span className="block text-foreground text-glow-strong">
                 {t("Faszination", "Fascination")}
               </span>
-              <span className="block gradient-text mt-[-0.05em]">
+              <span className="block gradient-text mt-[-0.05em] whitespace-nowrap">
                 {t("Wracksuche", "Wreck Hunting")}
               </span>
             </h1>
