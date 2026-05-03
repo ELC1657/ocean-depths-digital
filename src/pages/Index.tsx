@@ -9,7 +9,7 @@ import BubbleField from "@/components/BubbleField";
 import LightRays from "@/components/LightRays";
 import WaveDivider from "@/components/WaveDivider";
 import UnderwaterCanvas from "@/components/UnderwaterCanvas";
-import DepthMeter from "@/components/DepthMeter";
+
 import SonarSweep from "@/components/SonarSweep";
 import ParallaxSection from "@/components/ParallaxSection";
 import MagneticCursor from "@/components/MagneticCursor";
@@ -232,7 +232,7 @@ const Index = () => {
         
         <PressureShake />
       </Suspense>
-      <DepthMeter />
+      
       <MagneticCursor />
       <SideNavigator items={navItems} />
       
